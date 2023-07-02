@@ -1,0 +1,3 @@
+C:/Users/crazy/Documents/MI60/cmake-build-debug/CMakeFiles/MI60.elf.dir
+C:/Users/crazy/Documents/MI60/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/crazy/Documents/MI60/cmake-build-debug/CMakeFiles/rebuild_cache.dir

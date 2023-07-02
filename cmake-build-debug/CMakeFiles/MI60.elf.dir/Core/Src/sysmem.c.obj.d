@@ -1,0 +1,20 @@
+CMakeFiles/MI60.elf.dir/Core/Src/sysmem.c.obj: \
+ C:\Users\crazy\Documents\MI60\Core\Src\sysmem.c \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\errno.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\errno.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\reent.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\_ansi.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\newlib.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\_newlib_version.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\config.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\machine\ieeefp.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\features.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\_types.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\machine\_types.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\machine\_default_types.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\lock.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\stdint.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\_intsup.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\sys\_stdint.h
