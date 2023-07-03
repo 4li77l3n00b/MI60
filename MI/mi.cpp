@@ -14,7 +14,6 @@ void MI::ScanAndUpdate()
     for (uint16_t i = 0; i < 16; i++) {
         HAL_GPIO_WritePin(GPIOB, i << 10, GPIO_PIN_SET);
         HAL_GPIO_WritePin(GPIOB, (i^0xF) << 10, GPIO_PIN_RESET);
-        DelayUs(1);
         for (int k = 0; k < 4; k++) {
             m = ADC_BUF[k];
             if (m <= ADC_CONFIG[i*4+k].ZERO_POINT) keyBuffer[i*4+k] = false;
