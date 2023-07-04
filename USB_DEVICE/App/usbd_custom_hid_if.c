@@ -238,7 +238,9 @@ static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state)
   /* USER CODE BEGIN 6 */
   UNUSED(event_idx);
   UNUSED(state);
-
+  //Report Head = Report_type: 00 = begin, 01 = end, 10 = Key_setting, 11 = RGB_setting
+  //RGB_setting: Using Effect(4bit), arg0(Modified Key)(6bit), arg1(8bit), arg2(8bit), arg3(8bit)... (arg default = 0xFF: Unchanged)
+  //Key_setting: Modified Key(6bit), Mode(0 = APEX, 1 = WOOT), Actuation Point(8bit), Lift Threshold(8bit), Press Threshold(8bit)
   /* Start next USB packet transfer once data processing is completed */
   if (USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceFS) != (uint8_t)USBD_OK)
   {

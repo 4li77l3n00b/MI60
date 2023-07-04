@@ -57,7 +57,7 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
-uint16_t ADC_BUF[4] __attribute__((section(".RAM_D3"))) = {0};
+ALIGN_32BYTES(__attribute__((section(".RAM_D3"))) uint16_t ADC_BUF[4]);
 char debug_buf[128];
 /* USER CODE END PV */
 
@@ -676,7 +676,6 @@ void MPU_Config(void)
   MPU_InitStruct.Number = MPU_REGION_NUMBER5;
   MPU_InitStruct.BaseAddress = 0x38000000;
   MPU_InitStruct.Size = MPU_REGION_SIZE_64KB;
-  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
   /* Enables the MPU */

@@ -162,6 +162,12 @@ SECTIONS
     . = ALIGN(8);
   } >DTCMRAM
 
+  .RAM_D3(NOLOAD) :
+  {
+    . = ALIGN(32);
+    . = ALIGN(32);
+  } >RAM_D3
+
   /* Remove information from the standard libraries */
   /DISCARD/ :
   {

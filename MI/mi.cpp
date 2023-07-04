@@ -10,10 +10,13 @@ inline void DelayUs(uint32_t _quarterus)
 void MI::ScanAndUpdate()
 {
     //adc scan
+    uint16_t ADC_value[4];
     uint16_t m;
     for (uint16_t i = 0; i < 16; i++) {
         HAL_GPIO_WritePin(GPIOB, i << 10, GPIO_PIN_SET);
         HAL_GPIO_WritePin(GPIOB, (i^0xF) << 10, GPIO_PIN_RESET);
+        SCB_InvalidateDCache_by_Addr((uint32_t *)ADC_BUF, sizeof(ADC_BUF));
+        for (int j = 0; j < 4; j++) ADC_value[j] = ADC_BUF[j];
         for (int k = 0; k < 4; k++) {
             m = ADC_BUF[k];
             if (m <= ADC_CONFIG[i*4+k].ZERO_POINT) keyBuffer[i*4+k] = false;
@@ -62,10 +65,12 @@ void MI::Calibrate(MI::ScanConfig *_config) {
     memset(GOING, false, KEYNUM);
     //adc scan
     uint16_t m;
+    uint16_t ADC_value[4];
+    SCB_InvalidateDCache_by_Addr((uint32_t *)ADC_BUF, sizeof(ADC_BUF));
+    for (int j = 0; j < 4; j++) ADC_value[j] = ADC_BUF[j];
     for (uint16_t i = 0; i < 16; i++) {
         HAL_GPIO_WritePin(GPIOB, i << 10, GPIO_PIN_SET);
         HAL_GPIO_WritePin(GPIOB, (i ^ 0xF) << 10, GPIO_PIN_RESET);
-        DelayUs(1);
         for (int k = 0; k < 4; k++) {
             m = ADC_BUF[k];
             if (!GOING[i*4+k] && m == scanBuffer[i*4+k]) {
