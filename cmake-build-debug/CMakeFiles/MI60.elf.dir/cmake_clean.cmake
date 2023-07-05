@@ -86,6 +86,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/MI60.elf.dir/USB_DEVICE/Target/usbd_conf.c.obj.d"
   "CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj"
   "CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj.d"
+  "CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj"
+  "CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj.d"
   "MI60.elf"
   "MI60.elf.manifest"
   "MI60.elf.pdb"

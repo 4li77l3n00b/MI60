@@ -683,6 +683,20 @@ CMakeFiles/MI60.elf.dir/UserApp/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MI60.elf.dir/UserApp/main.cpp.s"
 	C:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\crazy\Documents\MI60\UserApp\main.cpp -o CMakeFiles\MI60.elf.dir\UserApp\main.cpp.s
 
+CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj: CMakeFiles/MI60.elf.dir/flags.make
+CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj: C:/Users/crazy/Documents/MI60/UserApp/spi_flash.cpp
+CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj: CMakeFiles/MI60.elf.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\crazy\Documents\MI60\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj"
+	C:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj -MF CMakeFiles\MI60.elf.dir\UserApp\spi_flash.cpp.obj.d -o CMakeFiles\MI60.elf.dir\UserApp\spi_flash.cpp.obj -c C:\Users\crazy\Documents\MI60\UserApp\spi_flash.cpp
+
+CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.i"
+	C:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\crazy\Documents\MI60\UserApp\spi_flash.cpp > CMakeFiles\MI60.elf.dir\UserApp\spi_flash.cpp.i
+
+CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.s"
+	C:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\crazy\Documents\MI60\UserApp\spi_flash.cpp -o CMakeFiles\MI60.elf.dir\UserApp\spi_flash.cpp.s
+
 # Object files for target MI60.elf
 MI60_elf_OBJECTS = \
 "CMakeFiles/MI60.elf.dir/Core/Src/main.c.obj" \
@@ -728,7 +742,8 @@ MI60_elf_OBJECTS = \
 "CMakeFiles/MI60.elf.dir/USB_DEVICE/App/usbd_custom_hid_if.c.obj" \
 "CMakeFiles/MI60.elf.dir/USB_DEVICE/App/usbd_desc.c.obj" \
 "CMakeFiles/MI60.elf.dir/USB_DEVICE/Target/usbd_conf.c.obj" \
-"CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj"
+"CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj" \
+"CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj"
 
 # External object files for target MI60.elf
 MI60_elf_EXTERNAL_OBJECTS =
@@ -777,9 +792,10 @@ MI60.elf: CMakeFiles/MI60.elf.dir/USB_DEVICE/App/usbd_custom_hid_if.c.obj
 MI60.elf: CMakeFiles/MI60.elf.dir/USB_DEVICE/App/usbd_desc.c.obj
 MI60.elf: CMakeFiles/MI60.elf.dir/USB_DEVICE/Target/usbd_conf.c.obj
 MI60.elf: CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj
+MI60.elf: CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj
 MI60.elf: CMakeFiles/MI60.elf.dir/build.make
 MI60.elf: CMakeFiles/MI60.elf.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\crazy\Documents\MI60\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Linking CXX executable MI60.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\crazy\Documents\MI60\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Linking CXX executable MI60.elf"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\MI60.elf.dir\link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Building C:/Users/crazy/Documents/MI60/cmake-build-debug/MI60.hex"
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Building C:/Users/crazy/Documents/MI60/cmake-build-debug/MI60.bin"

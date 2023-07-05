@@ -518,6 +518,12 @@
 		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/main.cpp">
 			<Option target="MI60.elf"/>
 		</Unit>
+		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/spi_flash.cpp">
+			<Option target="MI60.elf"/>
+		</Unit>
+		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/spi_flash.h">
+			<Option target="MI60.elf"/>
+		</Unit>
 		<Unit filename="C:/Users/crazy/Documents/MI60/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

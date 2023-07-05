@@ -1,9 +1,11 @@
 #include "common_inc.h"
 #include "MI/mi.h"
+#include "spi_flash.h"
 MI mi;
 
 void KeyboardMain() {
-    HAL_ADC_Start_DMA(&hadc3, (uint32_t *) ADC_BUF, 4);
+    HAL_ADC_Start_DMA(&hadc3, (uint32_t *) ADC_BUF, 2);
+    HAL_ADC_Start_DMA(&hadc1, (uint32_t *) (ADC_BUF + 2), 2);
     HAL_TIM_Base_Start_IT(&htim5);
     while (1) {
 

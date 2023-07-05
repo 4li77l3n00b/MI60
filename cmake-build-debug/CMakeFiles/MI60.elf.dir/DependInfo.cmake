@@ -80,6 +80,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/crazy/Documents/MI60/USB_DEVICE/Target/usbd_conf.c" "CMakeFiles/MI60.elf.dir/USB_DEVICE/Target/usbd_conf.c.obj" "gcc" "CMakeFiles/MI60.elf.dir/USB_DEVICE/Target/usbd_conf.c.obj.d"
   "C:/Users/crazy/Documents/MI60/MI/mi.cpp" "CMakeFiles/MI60.elf.dir/MI/mi.cpp.obj" "gcc" "CMakeFiles/MI60.elf.dir/MI/mi.cpp.obj.d"
   "C:/Users/crazy/Documents/MI60/UserApp/main.cpp" "CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj" "gcc" "CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj.d"
+  "C:/Users/crazy/Documents/MI60/UserApp/spi_flash.cpp" "CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj" "gcc" "CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj.d"
   )
 
 # Targets to which this target links.

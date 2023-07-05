@@ -2899,7 +2899,134 @@ CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj: C:/Users/crazy/Documents/MI60/User
   C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usb_device.h \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
   C:/Users/crazy/Documents/MI60/MI/mi.h \
-  C:/Users/crazy/Documents/MI60/UserApp/common_inc.h
+  C:/Users/crazy/Documents/MI60/UserApp/common_inc.h \
+  C:/Users/crazy/Documents/MI60/UserApp/spi_flash.h
+
+CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj: C:/Users/crazy/Documents/MI60/UserApp/spi_flash.cpp \
+  C:/Users/crazy/Documents/MI60/UserApp/spi_flash.h \
+  C:/Users/crazy/Documents/MI60/UserApp/common_inc.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdint-gcc.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
+  C:/Users/crazy/Documents/MI60/Core/Inc/stm32h7xx_hal_conf.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h750xx.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Include/core_cm7.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdint.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/stdint.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/_default_types.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/features.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/_newlib_version.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_intsup.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Include/cmsis_version.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Include/cmsis_compiler.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Include/cmsis_gcc.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Include/mpu_armv7.h \
+  C:/Users/crazy/Documents/MI60/Drivers/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/math.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/cmath \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/arm-none-eabi/thumb/v7e-m/nofp/bits/c++config.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/arm-none-eabi/thumb/v7e-m/nofp/bits/os_defines.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/arm-none-eabi/thumb/v7e-m/nofp/bits/cpu_defines.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/pstl/pstl_config.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/cpp_type_traits.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/ext/type_traits.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/math.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/reent.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/_ansi.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/newlib.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/config.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/ieeefp.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_types.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/_types.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/lock.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/cdefs.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/_ansi.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/std_abs.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/stdlib.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/machine/stdlib.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/alloca.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/specfun.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/stl_algobase.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/functexcept.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/exception_defines.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/ext/numeric_traits.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/stl_pair.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/type_traits \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/move.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/utility.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/stl_iterator_base_types.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/stl_iterator_base_funcs.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/concept_check.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/debug/assertions.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/stl_iterator.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/ptr_traits.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/debug/debug.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/bits/predefined_ops.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/limits \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/gamma.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/special_function_util.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/bessel_function.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/beta_function.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/ell_integral.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/exp_integral.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/hypergeometric.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/legendre_function.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/modified_bessel_func.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/poly_hermite.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/poly_laguerre.tcc \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/tr1/riemann_zeta.tcc \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_mdma.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_exti.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_cortex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_adc.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_adc.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_adc_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_flash.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_flash_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hsem.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_i2c_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
+  C:/Users/crazy/Documents/MI60/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
+  C:/Users/crazy/Documents/MI60/Core/Inc/main.h \
+  C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usbd_custom_hid_if.h \
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc/usbd_customhid.h \
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+  C:/Users/crazy/Documents/MI60/USB_DEVICE/Target/usbd_conf.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/stdio.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdarg.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/stdio.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/stdlib.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/c++/12.2.1/cstdlib \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/string.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/_locale.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/strings.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/string.h \
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
+  C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usb_device.h \
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
 
 
 C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h:
@@ -3275,3 +3402,7 @@ C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usbd_desc.h:
 C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usbd_desc.c:
 
 C:/Users/crazy/Documents/MI60/UserApp/main.cpp:
+
+C:/Users/crazy/Documents/MI60/UserApp/spi_flash.h:
+
+C:/Users/crazy/Documents/MI60/UserApp/spi_flash.cpp:

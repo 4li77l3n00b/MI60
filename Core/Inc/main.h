@@ -42,11 +42,12 @@ extern "C" {
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
 extern ADC_HandleTypeDef hadc3;
+extern ADC_HandleTypeDef hadc1;
 extern SPI_HandleTypeDef hspi2;
 extern TIM_HandleTypeDef htim5;
 extern DMA_HandleTypeDef hdma_adc3;
+extern DMA_HandleTypeDef hdma_adc1;
 extern uint16_t ADC_BUF[4];
-extern char debug_buf[128];
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

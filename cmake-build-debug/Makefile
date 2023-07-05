@@ -1168,6 +1168,30 @@ UserApp/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MI60.elf.dir\build.make CMakeFiles/MI60.elf.dir/UserApp/main.cpp.s
 .PHONY : UserApp/main.cpp.s
 
+UserApp/spi_flash.obj: UserApp/spi_flash.cpp.obj
+.PHONY : UserApp/spi_flash.obj
+
+# target to build an object file
+UserApp/spi_flash.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MI60.elf.dir\build.make CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.obj
+.PHONY : UserApp/spi_flash.cpp.obj
+
+UserApp/spi_flash.i: UserApp/spi_flash.cpp.i
+.PHONY : UserApp/spi_flash.i
+
+# target to preprocess a source file
+UserApp/spi_flash.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MI60.elf.dir\build.make CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.i
+.PHONY : UserApp/spi_flash.cpp.i
+
+UserApp/spi_flash.s: UserApp/spi_flash.cpp.s
+.PHONY : UserApp/spi_flash.s
+
+# target to generate assembly for a file
+UserApp/spi_flash.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MI60.elf.dir\build.make CMakeFiles/MI60.elf.dir/UserApp/spi_flash.cpp.s
+.PHONY : UserApp/spi_flash.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -1307,6 +1331,9 @@ help:
 	@echo ... UserApp/main.obj
 	@echo ... UserApp/main.i
 	@echo ... UserApp/main.s
+	@echo ... UserApp/spi_flash.obj
+	@echo ... UserApp/spi_flash.i
+	@echo ... UserApp/spi_flash.s
 .PHONY : help
 
 

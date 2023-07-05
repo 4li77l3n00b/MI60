@@ -499,7 +499,8 @@
 			"sourceIndexes" : 
 			[
 				113,
-				134
+				134,
+				135
 			]
 		}
 	],
@@ -648,7 +649,8 @@
 				128,
 				130,
 				132,
-				133
+				133,
+				136
 			]
 		},
 		{
@@ -697,7 +699,8 @@
 				127,
 				129,
 				131,
-				134
+				134,
+				135
 			]
 		},
 		{
@@ -709,7 +712,7 @@
 				38,
 				85,
 				124,
-				135
+				137
 			]
 		}
 	],
@@ -1433,6 +1436,17 @@
 			"compileGroupIndex" : 2,
 			"path" : "UserApp/main.cpp",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 2,
+			"path" : "UserApp/spi_flash.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "UserApp/spi_flash.h",
+			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
