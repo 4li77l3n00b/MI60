@@ -252,7 +252,8 @@
 				125,
 				127,
 				129,
-				131
+				131,
+				135
 			]
 		},
 		{
@@ -499,8 +500,7 @@
 			"sourceIndexes" : 
 			[
 				113,
-				134,
-				135
+				134
 			]
 		}
 	],
@@ -650,7 +650,8 @@
 				130,
 				132,
 				133,
-				136
+				136,
+				137
 			]
 		},
 		{
@@ -712,7 +713,7 @@
 				38,
 				85,
 				124,
-				137
+				138
 			]
 		}
 	],
@@ -1439,13 +1440,18 @@
 		},
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 2,
-			"path" : "UserApp/spi_flash.cpp",
+			"compileGroupIndex" : 0,
+			"path" : "UserApp/w25qxx.c",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"path" : "UserApp/spi_flash.h",
+			"path" : "UserApp/w25qxx.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "UserApp/w25qxxConf.h",
 			"sourceGroupIndex" : 0
 		},
 		{

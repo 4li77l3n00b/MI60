@@ -48,6 +48,7 @@ extern TIM_HandleTypeDef htim5;
 extern DMA_HandleTypeDef hdma_adc3;
 extern DMA_HandleTypeDef hdma_adc1;
 extern uint16_t ADC_BUF[4];
+extern uint8_t sfBuffer[4096];
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

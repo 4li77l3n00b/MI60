@@ -50,7 +50,7 @@ public:
         WS_HIGH = 0xFE,
         WS_LOW = 0xE0
     };
-    KeyCode_t keyMap[5][KEYNUM] = {
+    KeyCode_t keyMap[2][KEYNUM] = {
             {ESC,NUM_1,NUM_2,NUM_3,NUM_4,NUM_5,NUM_6,NUM_7,NUM_8,NUM_9,NUM_0,MINUS,EQUAL,BACKSPACE,
              TAB,Q,W,E,R,T,Y,U,I,O,P,LEFT_U_BRACE,RIGHT_U_BRACE,BACKSLASH,
              CAP_LOCK,A,S,D,F,G,H,J,K,L,SEMI_COLON,QUOTE,ENTER,

@@ -518,10 +518,13 @@
 		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/main.cpp">
 			<Option target="MI60.elf"/>
 		</Unit>
-		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/spi_flash.cpp">
+		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/w25qxx.c">
 			<Option target="MI60.elf"/>
 		</Unit>
-		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/spi_flash.h">
+		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/w25qxx.h">
+			<Option target="MI60.elf"/>
+		</Unit>
+		<Unit filename="C:/Users/crazy/Documents/MI60/UserApp/w25qxxConf.h">
 			<Option target="MI60.elf"/>
 		</Unit>
 		<Unit filename="C:/Users/crazy/Documents/MI60/CMakeLists.txt">
