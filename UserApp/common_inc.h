@@ -12,6 +12,7 @@ extern "C" {
 #include "usbd_custom_hid_if.h"
 #include "usbd_customhid.h"
 #include "usb_device.h"
+#include "w25qxx.h"
 
 void KeyboardMain();
 void OnTimerCallBack(uint8_t* CNT);

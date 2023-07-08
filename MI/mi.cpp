@@ -7,6 +7,11 @@ inline void DelayUs(uint32_t _quarterus)
             __NOP();
 }
 
+inline void uint16to8(const uint16_t* _op0, uint8_t* _op1, uint8_t* _op2) {
+    *_op1 = (uint8_t)((*_op0 >> 8) & 0xFF);
+    *_op2 = (uint8_t)((*_op0) & 0xFF);
+}
+
 void MI::ScanAndUpdate()
 {
     //adc scan
@@ -74,20 +79,20 @@ void MI::Calibrate(MI::ScanConfig *_config) {
         SCB_InvalidateDCache_by_Addr((uint32_t *)ADC_BUF, sizeof(ADC_BUF));
         for (int j = 0; j < 4; j++) ADC_value[j] = ADC_BUF[j];
         for (int k = 0; k < 4; k++) {
-            m = ADC_value[k];
-            if (!GOING[i*4+k] && m == scanBuffer[i*4+k]) {
-                _config->ZERO_POINT = m;
-                scanBuffer[i*4+k] = m;
-            }
-            else {
-                if (m >= scanBuffer[i*4+k]) {
-                    if (!GOING[i*4+k]) GOING[i*4+k] = true;
-                    scanBuffer[i*4+k] = m;
-                }
-                else {
-                    GOING[i*4+k] = false;
-                    _config->MAX_POINT = scanBuffer[i*4+k];
-                    isCalibrating = false;
+            if (i*4+k == NowCalibrating) {
+                m = ADC_value[k];
+                if (!GOING[i * 4 + k] && m == scanBuffer[i * 4 + k]) {
+                    _config->ZERO_POINT = m;
+                    scanBuffer[i * 4 + k] = m;
+                } else {
+                    if (m >= scanBuffer[i * 4 + k]) {
+                        if (!GOING[i * 4 + k]) GOING[i * 4 + k] = true;
+                        scanBuffer[i * 4 + k] = m;
+                    } else {
+                        GOING[i * 4 + k] = false;
+                        _config->MAX_POINT = scanBuffer[i * 4 + k];
+                        isCalibrating = false;
+                    }
                 }
             }
         }
@@ -175,4 +180,64 @@ uint8_t* MI::GetHidReportBuffer(uint8_t _reportId)
         default:
             return hidBuffer;
     }
+}
+
+void MI::StoreCalibration() {
+    W25qxx_EraseSector(0);
+    w25qxx.Lock = 1;
+    memset(sfBuffer, 0xFF, 4096);
+    sfBuffer[0] = KeyAddr;
+    sfBuffer[1] = KeyMapAddr;
+    sfBuffer[2] = RGBFXAddr;
+    sfBuffer[3] = RGBMapAddr;
+    for (int i = 0; i < 61; i++) {
+        sfBuffer[4*i+4] = (uint8_t)((ADC_CONFIG[i].ZERO_POINT >> 8) & 0xFF);
+        sfBuffer[4*i+5] = (uint8_t)((ADC_CONFIG[i].ZERO_POINT) & 0xFF);
+        sfBuffer[4*i+6] = (uint8_t)((ADC_CONFIG[i].MAX_POINT >> 8) & 0xFF);
+        sfBuffer[4*i+7] = (uint8_t)((ADC_CONFIG[i].MAX_POINT) & 0xFF);
+    }
+    w25qxx.Lock = 0;
+    W25qxx_WriteSector(sfBuffer, 0, 0, 248);
+}
+
+void MI::StoreKey(uint8_t key_addr) {
+    W25qxx_EraseSector(key_addr);
+    w25qxx.Lock = 1;
+    for (uint8_t i = 0; i < 61; i++) {
+        sfBuffer[6 * i] = (ADC_CONFIG[i].TRG_MODE == WOOT)? 1 : 0;
+        sfBuffer[6 * i + 1] = (uint8_t) ((ADC_CONFIG[i].ACT_POINT >> 8) & 0xFF);
+        sfBuffer[6 * i + 2] = (uint8_t) ((ADC_CONFIG[i].ACT_POINT) & 0xFF);
+        sfBuffer[6 * i + 3] = (uint8_t) ((ADC_CONFIG[i].LIFT_THRESHOLD >> 8) & 0xFF);
+        sfBuffer[6 * i + 4] = (uint8_t) ((ADC_CONFIG[i].LIFT_THRESHOLD) & 0xFF);
+        sfBuffer[6 * i + 5] = (uint8_t) ((ADC_CONFIG[i].MAX_POINT >> 8) & 0xFF);
+        sfBuffer[6 * i + 6] = (uint8_t) ((ADC_CONFIG[i].MAX_POINT) & 0xFF);
+    }
+    w25qxx.Lock = 0;
+    W25qxx_WriteSector(sfBuffer, key_addr, 0, 427);
+}
+
+void MI::StoreKeyMap(uint8_t keymap_addr) {
+    W25qxx_EraseSector(keymap_addr);
+    w25qxx.Lock = 1;
+    for (uint8_t i = 0; i < 61; i++) {
+        uint16to8((const uint16_t *) keyMap[0][i], &sfBuffer[2 * i], &sfBuffer[2 * i + 1]);
+        uint16to8((const uint16_t *) keyMap[1][i], &sfBuffer[2 * i + 122], &sfBuffer[2 * i + 123]);
+    }
+    w25qxx.Lock = 0;
+    W25qxx_WriteSector(sfBuffer, keymap_addr, 0, 248);
+}
+
+void MI::StoreRGBMap(uint8_t rgbmap_addr) {
+    W25qxx_EraseSector(rgbmap_addr);
+    w25qxx.Lock = 1;
+    for (uint8_t i = 0; i < 65; i++) {
+        sfBuffer[3*i] = RGBMap[0][i].r;
+        sfBuffer[3*i+1] = RGBMap[0][i].g;
+        sfBuffer[3*i+2] = RGBMap[0][i].b;
+        sfBuffer[3*i+195] = RGBMap[1][i].r;
+        sfBuffer[3*i+196] = RGBMap[1][i].g;
+        sfBuffer[3*i+197] = RGBMap[1][i].b;
+    }
+    w25qxx.Lock = 0;
+    W25qxx_WriteSector(sfBuffer, rgbmap_addr, 0, 390);
 }

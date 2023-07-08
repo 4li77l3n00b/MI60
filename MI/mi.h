@@ -55,16 +55,55 @@ public:
              TAB,Q,W,E,R,T,Y,U,I,O,P,LEFT_U_BRACE,RIGHT_U_BRACE,BACKSLASH,
              CAP_LOCK,A,S,D,F,G,H,J,K,L,SEMI_COLON,QUOTE,ENTER,
              LEFT_SHIFT,Z,X,C,V,B,N,M,COMMA,PERIOD,SLASH,RIGHT_SHIFT,
-             LEFT_CTRL,LEFT_GUI,LEFT_ALT,SPACE,RIGHT_ALT,FN,MENU,RIGHT_CTRL},
+             LEFT_CTRL,LEFT_GUI,LEFT_ALT,SPACE,RIGHT_ALT,MENU,RIGHT_CTRL,FN},
 
             {GRAVE_ACCENT,F1,F2,F3,F4,F5,F6,F7,F8,F9,F10,F11,F12,DELETE,
              TAB,Q,W,E,R,T,Y,U,I,O,P,HOME,PAGE_UP,PRINT,
              CAP_LOCK,A,S,D,F,G,H,J,K,L,END,PAGE_DOWN,ENTER,
-             LEFT_SHIFT,Z,X,C,V,B,N,M,COMMA,PERIOD,SLASH,RIGHT_SHIFT,
-             LEFT_CTRL,LEFT_GUI,LEFT_ALT,SPACE,RIGHT_ALT,FN,MENU,RIGHT_CTRL}
+             LEFT_SHIFT,Z,X,C,V,B,N,M,COMMA,PERIOD,UP_ARROW,RIGHT_SHIFT,
+             LEFT_CTRL,LEFT_GUI,LEFT_ALT,SPACE,LEFT_ARROW,DOWN_ARROW,RIGHT_ARROW,FN}
+    };
+
+    Color_t RGBMap[2][LED_NUMBER] = {
+            {{159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+            {159,255,255}},
+            {{159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{255,0,0},{255,0,0},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{255,0,0},{255,0,0},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{255,0,0},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{159,255,255},{159,255,255},{159,255,255},
+                    {159,255,255},{255,0,0},{255,0,0},{255,0,0},
+                    {159,255,255}}
     };
     volatile bool isRgbTxBusy;
-    volatile bool isCalibrating;
+    bool isCalibrating = false;
+    bool isCapsLocked;
+    bool isScrollLocked;
 
     enum Mode
     {
@@ -89,6 +128,7 @@ public:
         uint16_t LIFT_THRESHOLD;
         uint16_t PRESS_THRESHOLD;
     };
+
     static void Convert(TravelConfig* _config, ScanConfig* _SCAN_CONFIG)
     {
         _SCAN_CONFIG->TRG_MODE = _config->KeyMode;
@@ -98,12 +138,23 @@ public:
         _SCAN_CONFIG->PRESS_THRESHOLD = _config->PressTravel * Scaler;
     }
 
+    uint8_t KeyMapAddr;
+    void StoreKeyMap(uint8_t keymap_addr);
+    uint8_t KeyAddr;
+    void StoreKey(uint8_t key_addr);
+    uint8_t RGBMapAddr;
+    void StoreRGBMap(uint8_t rgbmap_addr);
+    uint8_t RGBFXAddr;
+    void StoreRGBFX(uint8_t rgbfx_addr);
     void ScanAndUpdate();
     void PostProcess();
     void SyncLights();
     uint8_t* GetHidReportBuffer(uint8_t _reportId);
+
     void SetRgbBufferByID(uint8_t _keyId, Color_t _color, float _brightness = 1);
     void Calibrate(ScanConfig* _config);
+    void StoreCalibration();
+    uint8_t NowCalibrating;
     void Press(KeyCode_t _key);
     void Release(KeyCode_t _key);
     TravelConfig miConfig[KEYNUM]{};

@@ -81,4 +81,6 @@ CMakeFiles/MI60.elf.dir/Core/Src/main.c.obj: \
  C:\Users\crazy\Documents\MI60\Middlewares\ST\STM32_USB_Device_Library\Core\Inc/usbd_def.h \
  C:\Users\crazy\Documents\MI60\Middlewares\ST\STM32_USB_Device_Library\Core\Inc/usbd_core.h \
  C:\Users\crazy\Documents\MI60\Middlewares\ST\STM32_USB_Device_Library\Core\Inc/usbd_ioreq.h \
- C:\Users\crazy\Documents\MI60\Middlewares\ST\STM32_USB_Device_Library\Core\Inc/usbd_ctlreq.h
+ C:\Users\crazy\Documents\MI60\Middlewares\ST\STM32_USB_Device_Library\Core\Inc/usbd_ctlreq.h \
+ C:\Users\crazy\Documents\MI60\UserApp/w25qxx.h \
+ c:\arm-gnu-toolchain\arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h
