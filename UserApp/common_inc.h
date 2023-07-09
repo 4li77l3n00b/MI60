@@ -15,7 +15,7 @@ extern "C" {
 #include "w25qxx.h"
 
 void KeyboardMain();
-void OnTimerCallBack(uint8_t* CNT);
+void OnTimerCallBack();
 
 #ifdef __cplusplus
 }

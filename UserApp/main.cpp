@@ -37,19 +37,14 @@ void KeyboardMain() {
     }
 }
 
-extern "C" void OnTimerCallBack(uint8_t* CNT)
+extern "C" void OnTimerCallBack()
 {
     if (!mi.isCalibrating) {
-        *CNT++;
         mi.ScanAndUpdate();
         mi.PostProcess();
-        if (*CNT == 8)
-        {
-            USBD_CUSTOM_HID_SendReport(&hUsbDeviceHS,
-                                       mi.GetHidReportBuffer(1),
-                                       MI::KEY_REPORT_SIZE);
-            *CNT = 0;
-        }
+        USBD_CUSTOM_HID_SendReport(&hUsbDeviceHS,
+                                   mi.GetHidReportBuffer(1),
+                                   MI::KEY_REPORT_SIZE);
     } else {
         mi.Calibrate(mi.ADC_CONFIG);
     }
