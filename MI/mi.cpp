@@ -18,8 +18,8 @@ void MI::ScanAndUpdate()
     uint16_t ADC_value[4];
     uint16_t m;
     for (uint16_t i = 0; i < 16; i++) {
-        HAL_GPIO_WritePin(GPIOB, i << 10, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(GPIOB, (i^0xF) << 10, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOD, i << 10, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOD, (i^0xF) << 10, GPIO_PIN_RESET);
         DelayUs(16);
         SCB_InvalidateDCache_by_Addr((uint32_t *)ADC_BUF, sizeof(ADC_BUF));
         for (int j = 0; j < 4; j++) ADC_value[j] = ADC_BUF[j];
@@ -73,8 +73,8 @@ void MI::Calibrate(MI::ScanConfig *_config) {
     uint16_t m;
     uint16_t ADC_value[4];
     for (uint16_t i = 0; i < 16; i++) {
-        HAL_GPIO_WritePin(GPIOB, i << 10, GPIO_PIN_SET);
-        HAL_GPIO_WritePin(GPIOB, (i ^ 0xF) << 10, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOD, i << 10, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOD, (i ^ 0xF) << 10, GPIO_PIN_RESET);
         DelayUs(16);
         SCB_InvalidateDCache_by_Addr((uint32_t *)ADC_BUF, sizeof(ADC_BUF));
         for (int j = 0; j < 4; j++) ADC_value[j] = ADC_BUF[j];

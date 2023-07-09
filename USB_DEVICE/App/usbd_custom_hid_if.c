@@ -93,10 +93,10 @@ void HID_RxCpltCallback(uint8_t* _data);
   * @{
   */
 
-/** Usb HID report descriptor. */
-__ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END =
+/** Usb custom HID report descriptor. */
+__ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_HS[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END =
 {
-  /* USER CODE BEGIN 0 */
+  /* USER CODE BEGIN 1 */
         0x05, 0x01,         //   Usage Page (Generic Desktop),
         0x09, 0x06,         //   Usage (Keyboard),
         0xA1, 0x01,         //   Collection (Application),
@@ -150,12 +150,11 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 
         0x95, 32,				// report count RX
         0x09, 0x02,				// usage
-        0x91, 0x02,
+        0x91, 0x02,				// Output (array)
 #endif
-  /* USER CODE END 0 */
-  0xC0    /*     END_COLLECTION	             */
+  /* USER CODE END 1 */
+   0xC0    /*     END_COLLECTION             */
 };
-
 /* USER CODE BEGIN PRIVATE_VARIABLES */
 
 /* USER CODE END PRIVATE_VARIABLES */
@@ -168,7 +167,8 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
   * @brief Public variables.
   * @{
   */
-extern USBD_HandleTypeDef hUsbDeviceFS;
+
+extern USBD_HandleTypeDef hUsbDeviceHS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
 
@@ -182,20 +182,20 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
   * @{
   */
 
-static int8_t CUSTOM_HID_Init_FS(void);
-static int8_t CUSTOM_HID_DeInit_FS(void);
-static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state);
+static int8_t CUSTOM_HID_Init_HS(void);
+static int8_t CUSTOM_HID_DeInit_HS(void);
+static int8_t CUSTOM_HID_OutEvent_HS(uint8_t event_idx, uint8_t state);
 
 /**
   * @}
   */
 
-USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops_FS =
+USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops_HS =
 {
-  CUSTOM_HID_ReportDesc_FS,
-  CUSTOM_HID_Init_FS,
-  CUSTOM_HID_DeInit_FS,
-  CUSTOM_HID_OutEvent_FS
+  CUSTOM_HID_ReportDesc_HS,
+  CUSTOM_HID_Init_HS,
+  CUSTOM_HID_DeInit_HS,
+  CUSTOM_HID_OutEvent_HS
 };
 
 /** @defgroup USBD_CUSTOM_HID_Private_Functions USBD_CUSTOM_HID_Private_Functions
@@ -209,22 +209,22 @@ USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops_FS =
   * @brief  Initializes the CUSTOM HID media low layer
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
-static int8_t CUSTOM_HID_Init_FS(void)
+static int8_t CUSTOM_HID_Init_HS(void)
 {
-  /* USER CODE BEGIN 4 */
+  /* USER CODE BEGIN 8 */
   return (USBD_OK);
-  /* USER CODE END 4 */
+  /* USER CODE END 8 */
 }
 
 /**
   * @brief  DeInitializes the CUSTOM HID media low layer
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
-static int8_t CUSTOM_HID_DeInit_FS(void)
+static int8_t CUSTOM_HID_DeInit_HS(void)
 {
-  /* USER CODE BEGIN 5 */
+  /* USER CODE BEGIN 9 */
   return (USBD_OK);
-  /* USER CODE END 5 */
+  /* USER CODE END 9 */
 }
 
 /**
@@ -233,25 +233,23 @@ static int8_t CUSTOM_HID_DeInit_FS(void)
   * @param  state: Event state
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
-static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state)
+static int8_t CUSTOM_HID_OutEvent_HS(uint8_t event_idx, uint8_t state)
 {
-  /* USER CODE BEGIN 6 */
+  /* USER CODE BEGIN 10 */
   UNUSED(event_idx);
   UNUSED(state);
-  //Report Head = Report_type: 00 = begin, 01 = end, 10 = Key_setting, 11 = RGB_setting
-  //RGB_setting: Using Effect(4bit), arg0(Modified Key)(6bit), arg1(8bit), arg2(8bit), arg3(8bit)... (arg default = 0xFF: Unchanged)
-  //Key_setting: Modified Key(6bit), Mode(0 = APEX, 1 = WOOT), Actuation Point(8bit), Lift Threshold(8bit), Press Threshold(8bit)
-  /* Start next USB packet transfer once data processing is completed */
-  if (USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceFS) != (uint8_t)USBD_OK)
+
+    /* Start next USB packet transfer once data processing is completed */
+  if (USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceHS) != (uint8_t)USBD_OK)
   {
     return -1;
   }
 
   return (USBD_OK);
-  /* USER CODE END 6 */
+  /* USER CODE END 10 */
 }
 
-/* USER CODE BEGIN 7 */
+/* USER CODE BEGIN 11 */
 /**
   * @brief  Send the report to the Host
   * @param  report: The report to be sent
@@ -259,12 +257,12 @@ static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state)
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
 /*
-static int8_t USBD_CUSTOM_HID_SendReport_FS(uint8_t *report, uint16_t len)
+static int8_t USBD_CUSTOM_HID_SendReport_HS(uint8_t *report, uint16_t len)
 {
-  return USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, report, len);
+  return USBD_CUSTOM_HID_SendReport(&hUsbDeviceHS, report, len);
 }
 */
-/* USER CODE END 7 */
+/* USER CODE END 11 */
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
 

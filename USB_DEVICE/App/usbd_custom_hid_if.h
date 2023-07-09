@@ -88,10 +88,10 @@
   */
 
 /** CUSTOMHID Interface callback. */
-extern USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops_FS;
+extern USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops_HS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
-extern USBD_HandleTypeDef hUsbDeviceFS;
+extern USBD_HandleTypeDef hUsbDeviceHS;
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**

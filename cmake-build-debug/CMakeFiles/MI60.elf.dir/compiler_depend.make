@@ -83,7 +83,9 @@ CMakeFiles/MI60.elf.dir/Core/Src/main.c.obj: C:/Users/crazy/Documents/MI60/Core/
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
-  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
+  C:/Users/crazy/Documents/MI60/UserApp/w25qxx.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h
 
 CMakeFiles/MI60.elf.dir/Core/Src/stm32h7xx_hal_msp.c.obj: C:/Users/crazy/Documents/MI60/Core/Src/stm32h7xx_hal_msp.c \
   C:/Users/crazy/Documents/MI60/Core/Inc/main.h \
@@ -230,7 +232,9 @@ CMakeFiles/MI60.elf.dir/Core/Src/stm32h7xx_it.c.obj: C:/Users/crazy/Documents/MI
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
   C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usb_device.h \
-  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+  C:/Users/crazy/Documents/MI60/UserApp/w25qxx.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h
 
 CMakeFiles/MI60.elf.dir/Core/Src/syscalls.c.obj: C:/Users/crazy/Documents/MI60/Core/Src/syscalls.c \
   C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/arm-none-eabi/include/sys/stat.h \
@@ -2132,7 +2136,9 @@ CMakeFiles/MI60.elf.dir/MI/mi.cpp.obj: C:/Users/crazy/Documents/MI60/MI/mi.cpp \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
   C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usb_device.h \
-  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+  C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+  C:/Users/crazy/Documents/MI60/UserApp/w25qxx.h \
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h
 
 CMakeFiles/MI60.elf.dir/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.c.obj: C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.c \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc/usbd_customhid.h \
@@ -2898,10 +2904,10 @@ CMakeFiles/MI60.elf.dir/UserApp/main.cpp.obj: C:/Users/crazy/Documents/MI60/User
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
   C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usb_device.h \
   C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
-  C:/Users/crazy/Documents/MI60/MI/mi.h \
-  C:/Users/crazy/Documents/MI60/UserApp/common_inc.h \
   C:/Users/crazy/Documents/MI60/UserApp/w25qxx.h \
-  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h
+  C:/arm-gnu-toolchain/arm-gnu-toolchain-12.2.mpacbti-rel1-mingw-w64-i686-arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h \
+  C:/Users/crazy/Documents/MI60/MI/mi.h \
+  C:/Users/crazy/Documents/MI60/UserApp/common_inc.h
 
 CMakeFiles/MI60.elf.dir/UserApp/w25qxx.c.obj: C:/Users/crazy/Documents/MI60/UserApp/w25qxx.c \
   C:/Users/crazy/Documents/MI60/UserApp/w25qxxConf.h \
@@ -3162,6 +3168,8 @@ C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/u
 
 C:/Users/crazy/Documents/MI60/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
 
+C:/Users/crazy/Documents/MI60/UserApp/w25qxx.h:
+
 C:/Users/crazy/Documents/MI60/Core/Src/stm32h7xx_hal_msp.c:
 
 C:/Users/crazy/Documents/MI60/Core/Src/stm32h7xx_it.c:
@@ -3349,7 +3357,5 @@ C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usbd_desc.h:
 C:/Users/crazy/Documents/MI60/USB_DEVICE/App/usbd_desc.c:
 
 C:/Users/crazy/Documents/MI60/UserApp/main.cpp:
-
-C:/Users/crazy/Documents/MI60/UserApp/w25qxx.h:
 
 C:/Users/crazy/Documents/MI60/UserApp/w25qxxConf.h:

@@ -45,7 +45,7 @@ extern "C" void OnTimerCallBack(uint8_t* CNT)
         mi.PostProcess();
         if (*CNT == 8)
         {
-            USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,
+            USBD_CUSTOM_HID_SendReport(&hUsbDeviceHS,
                                        mi.GetHidReportBuffer(1),
                                        MI::KEY_REPORT_SIZE);
             *CNT = 0;
