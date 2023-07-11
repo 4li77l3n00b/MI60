@@ -22,7 +22,7 @@
 #include "usbd_custom_hid_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-
+#include "common_inc.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -144,11 +144,11 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_HS[USBD_CUSTOM_HID_REPORT_DES
         0x15, 0x00,				// logical minimum = 0
         0x26, 0xFF, 0x00,		// logical maximum = 255
 
-        0x95, 32,				// report count TX
+        0x95, RAWHID_TX_SIZE,				// report count TX
         0x09, 0x01,				// usage
         0x81, 0x02,				// Input (array)
 
-        0x95, 32,				// report count RX
+        0x95, RAWHID_RX_SIZE,				// report count RX
         0x09, 0x02,				// usage
         0x91, 0x02,				// Output (array)
 #endif
@@ -238,7 +238,29 @@ static int8_t CUSTOM_HID_OutEvent_HS(uint8_t event_idx, uint8_t state)
   /* USER CODE BEGIN 10 */
   UNUSED(event_idx);
   UNUSED(state);
-
+    USBD_CUSTOM_HID_HandleTypeDef *hhid = (USBD_CUSTOM_HID_HandleTypeDef *)hUsbDeviceHS.pClassData;
+    switch (hhid->Report_buf[0]) {
+        case 1:
+            CapsLock((bool)(hhid->Report_buf[1] & 0x02));
+            ScrollLock((bool)(hhid->Report_buf[1] & 0x04));
+        case 2:
+            switch (hhid->Report_buf[1]) {
+                case 0:
+                    SyncAll();
+                case 1:
+                    StartCalibration(hhid->Report_buf[2]);
+                case 2:
+                    ChangeKeyArg(hhid->Report_buf + 2);
+                case 3:
+                    ChangeConfKeyMap(hhid->Report_buf + 2);
+                case 4:
+                    ChangeKeyMap(hhid->Report_buf + 2);
+                case 5:
+                    ChangeRGBMap(hhid->Report_buf + 2);
+                case 6:
+                    ChangeRGBFXArg(hhid->Report_buf + 2);
+            }
+    }
     /* Start next USB packet transfer once data processing is completed */
   if (USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceHS) != (uint8_t)USBD_OK)
   {

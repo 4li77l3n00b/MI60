@@ -3,13 +3,15 @@
 
 #include "common_inc.h"
 
+void DelayUs(uint32_t _quarterus);
+
 class MI
 {
 public:
     static const uint8_t KEYNUM = 64;
     static const uint8_t LED_NUMBER = 65;
     static const uint16_t KEY_REPORT_SIZE = 1 + 16;
-    static const uint16_t RAW_REPORT_SIZE = 1 + 32;
+    static const uint16_t RAW_REPORT_SIZE = 1 + 64;
     static const uint16_t HID_REPORT_SIZE = KEY_REPORT_SIZE + RAW_REPORT_SIZE;
 
     enum KeyCode_t : int16_t
@@ -57,14 +59,14 @@ public:
              LEFT_SHIFT,Z,X,C,V,B,N,M,COMMA,PERIOD,SLASH,RIGHT_SHIFT,
              LEFT_CTRL,LEFT_GUI,LEFT_ALT,SPACE,RIGHT_ALT,MENU,RIGHT_CTRL,FN},
 
-            {GRAVE_ACCENT,F1,F2,F3,F4,F5,F6,F7,F8,F9,F10,F11,F12,DELETE,
-             TAB,Q,W,E,R,T,Y,U,I,O,P,HOME,PAGE_UP,PRINT,
+            {GRAVE_ACCENT,F1,F2,F3,F4,F5,F6,F7,F8,F9,F10,F11,F12,BACKSLASH,
+             TAB,Q,W,E,R,T,Y,U,I,O,P,HOME,PAGE_UP,DELETE,
              CAP_LOCK,A,S,D,F,G,H,J,K,L,END,PAGE_DOWN,ENTER,
              LEFT_SHIFT,Z,X,C,V,B,N,M,COMMA,PERIOD,UP_ARROW,RIGHT_SHIFT,
              LEFT_CTRL,LEFT_GUI,LEFT_ALT,SPACE,LEFT_ARROW,DOWN_ARROW,RIGHT_ARROW,FN}
     };
 
-    Color_t RGBMap[2][LED_NUMBER] = {
+    Color_t RGBMap[3][LED_NUMBER] = {
             {{159,255,255},{159,255,255},{159,255,255},{159,255,255},
             {159,255,255},{159,255,255},{159,255,255},{159,255,255},
             {159,255,255},{159,255,255},{159,255,255},{159,255,255},
@@ -104,6 +106,7 @@ public:
     bool isCalibrating = false;
     bool isCapsLocked;
     bool isScrollLocked;
+    bool isFnPresssed;
 
     enum Mode
     {
@@ -138,28 +141,39 @@ public:
         _SCAN_CONFIG->PRESS_THRESHOLD = _config->PressTravel * Scaler;
     }
 
-    uint8_t KeyMapAddr;
-    void StoreKeyMap(uint8_t keymap_addr);
-    uint8_t KeyAddr;
-    void StoreKey(uint8_t key_addr);
-    uint8_t RGBMapAddr;
-    void StoreRGBMap(uint8_t rgbmap_addr);
-    uint8_t RGBFXAddr;
-    void StoreRGBFX(uint8_t rgbfx_addr);
+    void InitAndIndex();
+    uint8_t CalibKeyID;
+    void Calibrate(uint8_t _keyID);
+    void SyncCalibration();
+
+    void CopyKeyArgs();
+    void SyncKeyArgs();
+
+    void CopyKeyMap();
+    void SyncKeyMap();
+
+    uint16_t ConflictingKeyMap[4][2] = {{63,63},{63,63},{63,63},{63,63}};
+    void CopyConfKeyMap();
+    void SyncConfKeyMap();
+
+    void CopyRGBMap();
+    void SyncRGBMap();
+
+    void CopyRGBFXArgs();
+    void SyncRGBFXArgs();
+
     void ScanAndUpdate();
     void PostProcess();
     void SyncLights();
     uint8_t* GetHidReportBuffer(uint8_t _reportId);
 
     void SetRgbBufferByID(uint8_t _keyId, Color_t _color, float _brightness = 1);
-    void Calibrate(ScanConfig* _config);
-    void StoreCalibration();
-    uint8_t NowCalibrating;
+    uint8_t RGBFXArgs[16];
     void Press(KeyCode_t _key);
     void Release(KeyCode_t _key);
     TravelConfig miConfig[KEYNUM]{};
     ScanConfig ADC_CONFIG[KEYNUM]{};
-
+    uint8_t hidBuffer[HID_REPORT_SIZE]{};
 
 private:
     bool PENDING[KEYNUM]{};
@@ -167,7 +181,6 @@ private:
     bool GOING[KEYNUM]{};
     uint16_t scanBuffer[KEYNUM]{};
     bool keyBuffer[KEYNUM]{};
-    uint8_t hidBuffer[HID_REPORT_SIZE]{};
     uint8_t rgbBuffer[LED_NUMBER][3][8]{};
     uint8_t wsCommit[64] = {0};
     uint8_t brightnessPreDiv = 2;

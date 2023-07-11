@@ -1,17 +1,14 @@
 #include "mi.h"
 
-inline void DelayUs(uint32_t _quarterus)
+const uint16_t SectorByteLength[6] = {4*61, 7*61, 4*2*2, 2*2*61, 3*65*3, 16};
+
+void DelayUs(uint32_t _quarterus)
 {
     for (int i = 0; i < _quarterus; i++)
         for (int j = 0; j < 13; j++)  // ToDo: tune this for different chips
             __NOP();
 }
-
-inline void uint16to8(const uint16_t* _op0, uint8_t* _op1, uint8_t* _op2) {
-    *_op1 = (uint8_t)((*_op0 >> 8) & 0xFF);
-    *_op2 = (uint8_t)((*_op0) & 0xFF);
-}
-
+//----------------------------------------------------------------------------------------------------------------------
 void MI::ScanAndUpdate()
 {
     //adc scan
@@ -67,7 +64,7 @@ void MI::ScanAndUpdate()
 
 }
 
-void MI::Calibrate(MI::ScanConfig *_config) {
+void MI::Calibrate(uint8_t _keyID) {
     memset(GOING, false, KEYNUM);
     //adc scan
     uint16_t m;
@@ -79,10 +76,10 @@ void MI::Calibrate(MI::ScanConfig *_config) {
         SCB_InvalidateDCache_by_Addr((uint32_t *)ADC_BUF, sizeof(ADC_BUF));
         for (int j = 0; j < 4; j++) ADC_value[j] = ADC_BUF[j];
         for (int k = 0; k < 4; k++) {
-            if (i*4+k == NowCalibrating) {
+            if (i*4+k == _keyID) {
                 m = ADC_value[k];
                 if (!GOING[i * 4 + k] && m == scanBuffer[i * 4 + k]) {
-                    _config->ZERO_POINT = m;
+                    ADC_CONFIG[_keyID].ZERO_POINT = m;
                     scanBuffer[i * 4 + k] = m;
                 } else {
                     if (m >= scanBuffer[i * 4 + k]) {
@@ -90,8 +87,9 @@ void MI::Calibrate(MI::ScanConfig *_config) {
                         scanBuffer[i * 4 + k] = m;
                     } else {
                         GOING[i * 4 + k] = false;
-                        _config->MAX_POINT = scanBuffer[i * 4 + k];
+                        ADC_CONFIG[_keyID].MAX_POINT = scanBuffer[i * 4 + k];
                         isCalibrating = false;
+                        Convert(&miConfig[_keyID], &ADC_CONFIG[_keyID]);
                     }
                 }
             }
@@ -137,10 +135,16 @@ void MI::PostProcess() {
     memset(hidBuffer, 0, KEY_REPORT_SIZE);
     for (int i = 0; i < KEYNUM; i++) {
         bool key = keyBuffer[i];
-        if (key) Press(keyMap[keyBuffer[58]?1:0][i]);
+        if (key) Press(keyMap[keyBuffer[60]?1:0][i]);
+    }
+    for (auto & _conf_key : ConflictingKeyMap) {
+        if (keyBuffer[_conf_key[0]] && keyBuffer[_conf_key[1]]) {
+            Release(keyMap[keyBuffer[60]?1:0][_conf_key[0]]);
+            Release(keyMap[keyBuffer[60]?1:0][_conf_key[1]]);
+        }
     }
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void MI::SetRgbBufferByID(uint8_t _keyId, MI::Color_t _color, float _brightness)
 {
     // To ensure there's no sequence zero bits, otherwise will case ws2812b protocol error.
@@ -166,7 +170,7 @@ void MI::SyncLights()
     isRgbTxBusy = true;
     HAL_SPI_Transmit_DMA(&hspi2, wsCommit, 64);
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 uint8_t* MI::GetHidReportBuffer(uint8_t _reportId)
 {
     switch (_reportId)
@@ -181,63 +185,99 @@ uint8_t* MI::GetHidReportBuffer(uint8_t _reportId)
             return hidBuffer;
     }
 }
+//----------------------------------------------------------------------------------------------------------------------
 
-void MI::StoreCalibration() {
-    W25qxx_EraseSector(0);
-    w25qxx.Lock = 1;
-    memset(sfBuffer, 0xFF, 4096);
-    sfBuffer[0] = KeyAddr;
-    sfBuffer[1] = KeyMapAddr;
-    sfBuffer[2] = RGBFXAddr;
-    sfBuffer[3] = RGBMapAddr;
-    for (int i = 0; i < 61; i++) {
-        sfBuffer[4*i+4] = (uint8_t)((ADC_CONFIG[i].ZERO_POINT >> 8) & 0xFF);
-        sfBuffer[4*i+5] = (uint8_t)((ADC_CONFIG[i].ZERO_POINT) & 0xFF);
-        sfBuffer[4*i+6] = (uint8_t)((ADC_CONFIG[i].MAX_POINT >> 8) & 0xFF);
-        sfBuffer[4*i+7] = (uint8_t)((ADC_CONFIG[i].MAX_POINT) & 0xFF);
-    }
-    w25qxx.Lock = 0;
-    W25qxx_WriteSector(sfBuffer, 0, 0, 248);
+//----------------------------------------------------------------------------------------------------------------------
+// Read and Apply Parameters
+inline void ReadSector(uint16_t addr, uint8_t usage) {
+    W25qxx_ReadSector(sfBuffer,
+                      addr,
+                      0,
+                      SectorByteLength[usage]);
 }
 
-void MI::StoreKey(uint8_t key_addr) {
-    W25qxx_EraseSector(key_addr);
-    w25qxx.Lock = 1;
-    for (uint8_t i = 0; i < 61; i++) {
-        sfBuffer[6 * i] = (ADC_CONFIG[i].TRG_MODE == WOOT)? 1 : 0;
-        sfBuffer[6 * i + 1] = (uint8_t) ((ADC_CONFIG[i].ACT_POINT >> 8) & 0xFF);
-        sfBuffer[6 * i + 2] = (uint8_t) ((ADC_CONFIG[i].ACT_POINT) & 0xFF);
-        sfBuffer[6 * i + 3] = (uint8_t) ((ADC_CONFIG[i].LIFT_THRESHOLD >> 8) & 0xFF);
-        sfBuffer[6 * i + 4] = (uint8_t) ((ADC_CONFIG[i].LIFT_THRESHOLD) & 0xFF);
-        sfBuffer[6 * i + 5] = (uint8_t) ((ADC_CONFIG[i].MAX_POINT >> 8) & 0xFF);
-        sfBuffer[6 * i + 6] = (uint8_t) ((ADC_CONFIG[i].MAX_POINT) & 0xFF);
+void MI::InitAndIndex() {
+    ReadSector(0, 0);
+    for (int i = 0; i < KEYNUM-3; i++) {
+        uint8to16(&sfBuffer[4*i+4], &sfBuffer[4*i+5], &ADC_CONFIG[i].ZERO_POINT);
+        uint8to16(&sfBuffer[4*i+6], &sfBuffer[4*i+7], &ADC_CONFIG[i].MAX_POINT);
     }
-    w25qxx.Lock = 0;
-    W25qxx_WriteSector(sfBuffer, key_addr, 0, 427);
 }
 
-void MI::StoreKeyMap(uint8_t keymap_addr) {
-    W25qxx_EraseSector(keymap_addr);
-    w25qxx.Lock = 1;
-    for (uint8_t i = 0; i < 61; i++) {
-        uint16to8((const uint16_t *) keyMap[0][i], &sfBuffer[2 * i], &sfBuffer[2 * i + 1]);
-        uint16to8((const uint16_t *) keyMap[1][i], &sfBuffer[2 * i + 122], &sfBuffer[2 * i + 123]);
+void MI::CopyKeyArgs() {
+    ReadSector(1, 1);
+    for (int i = 0; i < KEYNUM-3; i++) {
+        ADC_CONFIG[i].TRG_MODE = (sfBuffer[i*7] == 0 ? MI::APEX : MI::WOOT);
+        uint8to16(&sfBuffer[i*7+1], &sfBuffer[i*7+2], &ADC_CONFIG[i].ACT_POINT);
+        uint8to16(&sfBuffer[i*7+3], &sfBuffer[i*7+4], &ADC_CONFIG[i].LIFT_THRESHOLD);
+        uint8to16(&sfBuffer[i*7+5], &sfBuffer[i*7+6], &ADC_CONFIG[i].PRESS_THRESHOLD);
     }
-    w25qxx.Lock = 0;
-    W25qxx_WriteSector(sfBuffer, keymap_addr, 0, 248);
 }
 
-void MI::StoreRGBMap(uint8_t rgbmap_addr) {
-    W25qxx_EraseSector(rgbmap_addr);
-    w25qxx.Lock = 1;
-    for (uint8_t i = 0; i < 65; i++) {
-        sfBuffer[3*i] = RGBMap[0][i].r;
-        sfBuffer[3*i+1] = RGBMap[0][i].g;
-        sfBuffer[3*i+2] = RGBMap[0][i].b;
-        sfBuffer[3*i+195] = RGBMap[1][i].r;
-        sfBuffer[3*i+196] = RGBMap[1][i].g;
-        sfBuffer[3*i+197] = RGBMap[1][i].b;
+void MI::CopyConfKeyMap() {
+    ReadSector(2, 2);
+    memcpy(ConflictingKeyMap, sfBuffer, SectorByteLength[2]);
+}
+
+void MI::CopyKeyMap() {
+    ReadSector(3, 3);
+    memcpy(keyMap, sfBuffer, SectorByteLength[3]);
+}
+
+void MI::CopyRGBMap() {
+    ReadSector(4, 4);
+    memcpy(RGBMap, sfBuffer, SectorByteLength[4]);
+}
+
+void MI::CopyRGBFXArgs() {
+    ReadSector(5, 5);
+    memcpy(RGBFXArgs, sfBuffer, 16);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// Modify and Synchronize Parameters
+void WriteSector(uint16_t addr, uint8_t usage) {
+    W25qxx_EraseSector(addr);
+    W25qxx_WriteSector(txBuffer,
+                       addr,
+                       0,
+                       SectorByteLength[usage]);
+}
+
+void MI::SyncCalibration() {
+    for (int i = 0; i < KEYNUM - 3; i++) {
+        uint16to8(&ADC_CONFIG[i].ZERO_POINT, &txBuffer[4*i], &txBuffer[4*i+1]);
+        uint16to8(&ADC_CONFIG[i].MAX_POINT, &txBuffer[4*i+2], &txBuffer[4*i+3]);
     }
-    w25qxx.Lock = 0;
-    W25qxx_WriteSector(sfBuffer, rgbmap_addr, 0, 390);
+    WriteSector(0, 0);
+}
+
+void MI::SyncKeyArgs() {
+    for (int i = 0; i < KEYNUM - 3; i++) {
+        txBuffer[7*i] = (ADC_CONFIG[i].TRG_MODE == WOOT)? 1:0;
+        uint16to8(&ADC_CONFIG[i].ACT_POINT,  &txBuffer[7*i+1], &txBuffer[7*i+2]);
+        uint16to8(&ADC_CONFIG[i].LIFT_THRESHOLD,  &txBuffer[7*i+3], &txBuffer[7*i+4]);
+        uint16to8(&ADC_CONFIG[i].PRESS_THRESHOLD,  &txBuffer[7*i+5], &txBuffer[7*i+6]);
+    }
+    WriteSector(1, 1);
+}
+
+void MI::SyncConfKeyMap() {
+    memcpy(txBuffer, ConflictingKeyMap, SectorByteLength[2]);
+    WriteSector(2, 2);
+}
+
+void MI::SyncKeyMap() {
+    memcpy(txBuffer, keyMap, SectorByteLength[3]);
+    WriteSector(3, 3);
+}
+
+void MI::SyncRGBMap() {
+    memcpy(txBuffer, RGBMap, SectorByteLength[2]);
+    WriteSector(4, 4);
+}
+
+void MI::SyncRGBFXArgs() {
+    memcpy(txBuffer, RGBFXArgs, SectorByteLength[2]);
+    WriteSector(5, 5);
 }

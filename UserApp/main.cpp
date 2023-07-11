@@ -5,35 +5,20 @@ MI mi;
 void KeyboardMain() {
     //Init config from W25Q16 Flash
     W25qxx_Init();
-    W25qxx_ReadSector(sfBuffer, 0, 0, 248);
-    mi.KeyAddr = sfBuffer[0];
-    mi.KeyMapAddr = sfBuffer[1];
-    mi.RGBMapAddr = sfBuffer[2];
-    mi.RGBFXAddr = sfBuffer[3];
-    //Fetch calibration result
-    for (int i = 0; i < 61; i++) {
-        mi.ADC_CONFIG[i].ZERO_POINT = (uint16_t)(sfBuffer[4*i+4]) | ((uint16_t)(sfBuffer[4*i+5]) << 8);
-        mi.ADC_CONFIG[i].MAX_POINT = (uint16_t)(sfBuffer[4*i+6]) | ((uint16_t)(sfBuffer[4*i+7]) << 8);
-    }
-    //Fetch key config
-    W25qxx_ReadSector(sfBuffer, mi.KeyAddr, 0, 427);
-    for (int i = 0; i < 61; ++i) {
-        mi.ADC_CONFIG[i].TRG_MODE = (sfBuffer[i*7] == 0 ? MI::APEX : MI::WOOT);
-        mi.ADC_CONFIG[i].ACT_POINT = (uint16_t)(sfBuffer[i*7+1]) | ((uint16_t)(sfBuffer[i*7+2]) << 8);
-        mi.ADC_CONFIG[i].LIFT_THRESHOLD = (uint16_t)(sfBuffer[i*7+3]) | ((uint16_t)(sfBuffer[i*7+4]) << 8);
-        mi.ADC_CONFIG[i].PRESS_THRESHOLD = (uint16_t)(sfBuffer[i*7+5]) | ((uint16_t)(sfBuffer[i*7+6]) << 8);
-    }
-    //Fetch key map
-    W25qxx_ReadSector(sfBuffer, mi.KeyMapAddr, 0, 244);
-    for (int i = 0; i < 61; ++i) {
-        mi.keyMap[0][i] = static_cast<MI::KeyCode_t>((uint16_t)(sfBuffer[2 * i]) | (((uint16_t)sfBuffer[2 * i + 1]) << 8));
-        mi.keyMap[1][i] = static_cast<MI::KeyCode_t>((uint16_t)(sfBuffer[2 * i + 122]) | ((uint16_t)(sfBuffer[2 * i + 123]) << 8));
-    }
+    mi.InitAndIndex();
+    mi.CopyKeyArgs();
+    mi.CopyConfKeyMap();
+    mi.CopyKeyMap();
+    mi.CopyRGBMap();
+    mi.CopyRGBFXArgs();
     HAL_ADC_Start_DMA(&hadc3, (uint32_t *) ADC_BUF, 2);
     HAL_ADC_Start_DMA(&hadc1, (uint32_t *) (ADC_BUF + 2), 2);
     HAL_TIM_Base_Start_IT(&htim5);
+    //RGB Frame Loop
     while (1) {
+        DelayUs(500);
 
+        mi.SyncLights();
     }
 }
 
@@ -46,12 +31,99 @@ extern "C" void OnTimerCallBack()
                                    mi.GetHidReportBuffer(1),
                                    MI::KEY_REPORT_SIZE);
     } else {
-        mi.Calibrate(mi.ADC_CONFIG);
+        mi.Calibrate(mi.CalibKeyID);
     }
 }
 
 extern "C"
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* hspi)
 {
-    mi.isRgbTxBusy = false;
+    if (hspi == &hspi2)
+        mi.isRgbTxBusy = false;
+}
+
+void uint16to8(const uint16_t* _op0, uint8_t* _op1, uint8_t* _op2) {
+    *_op1 = (uint8_t)((*_op0 >> 8) & 0xFF);
+    *_op2 = (uint8_t)((*_op0) & 0xFF);
+}
+
+void uint8to16(const uint8_t* _op1, const uint8_t* _op2, uint16_t* _dest) {
+    *_dest = (uint16_t)*_op2 | ((uint16_t)*_op1 << 8);
+}
+
+void uint8tofloat(const uint8_t* addr, float_t* _dest) {
+    memcpy(_dest, addr, 4);
+}
+
+extern "C"
+void CapsLock(bool state) {
+    mi.isCapsLocked = state;
+}
+
+extern "C"
+void ScrollLock(bool state) {
+    mi.isScrollLocked = state;
+}
+
+extern "C"
+void ReturnState(uint8_t _state) {
+    mi.hidBuffer[mi.KEY_REPORT_SIZE + 1] = _state;
+    USBD_CUSTOM_HID_SendReport(&hUsbDeviceHS,
+                               mi.GetHidReportBuffer(2),
+                               mi.RAW_REPORT_SIZE);
+}
+
+extern "C"
+void SyncAll() {
+    mi.SyncKeyArgs();
+    mi.SyncConfKeyMap();
+    mi.SyncKeyMap();
+    mi.SyncRGBMap();
+    mi.SyncRGBFXArgs();
+}
+
+extern "C"
+void StartCalibration(uint8_t _keyID) {
+    mi.CalibKeyID = _keyID;
+    mi.isCalibrating = true;
+    ReturnState(0xFF);
+}
+
+extern  "C"
+void ChangeKeyArg(const uint8_t* _buf) {
+    uint8_t _keyID = _buf[0];
+    mi.miConfig[_keyID].KeyMode = (_buf[1] == 1)? MI::WOOT : MI::APEX;
+    uint8tofloat((_buf+2), &(mi.miConfig[_keyID].ActPoint));
+    uint8tofloat((_buf+6), &(mi.miConfig[_keyID].LiftTravel));
+    uint8tofloat((_buf+10), &(mi.miConfig[_keyID].PressTravel));
+    mi.Convert(&mi.miConfig[_keyID], &mi.ADC_CONFIG[_keyID]);
+    ReturnState(0xFF);
+}
+
+extern "C"
+void ChangeConfKeyMap(const uint8_t* _buf) {
+    memcpy(mi.ConflictingKeyMap, _buf, 8);
+    ReturnState(0xFF);
+}
+
+extern "C"
+void ChangeKeyMap(const uint8_t* _buf) {
+    uint8_t _layer = _buf[0];
+    uint8_t _keyID = _buf[1];
+    uint8to16(&_buf[2], &_buf[3], reinterpret_cast<uint16_t *>(&mi.keyMap[_layer][_keyID]));
+    ReturnState(0xFF);
+}
+
+extern "C"
+void ChangeRGBMap(const uint8_t* _buf) {
+    uint8_t _layer = _buf[0];
+    uint8_t _keyID = _buf[1];
+    memcpy(&mi.RGBMap[_layer][_keyID], _buf + 2, 3);
+    ReturnState(0xFF);
+}
+
+extern "C"
+void ChangeRGBFXArg(const uint8_t* _buf) {
+    memcpy(mi.RGBFXArgs, _buf + 1, 16);
+    ReturnState(0xFF);
 }
