@@ -16,7 +16,7 @@ void KeyboardMain() {
     HAL_TIM_Base_Start_IT(&htim5);
     //RGB Frame Loop
     while (1) {
-        DelayUs(500);
+        DelayUs(4000);
 
         mi.SyncLights();
     }
@@ -75,6 +75,7 @@ void ReturnState(uint8_t _state) {
 
 extern "C"
 void SyncAll() {
+    mi.SyncCalibration();
     mi.SyncKeyArgs();
     mi.SyncConfKeyMap();
     mi.SyncKeyMap();
@@ -94,8 +95,9 @@ void ChangeKeyArg(const uint8_t* _buf) {
     uint8_t _keyID = _buf[0];
     mi.miConfig[_keyID].KeyMode = (_buf[1] == 1)? MI::WOOT : MI::APEX;
     uint8tofloat((_buf+2), &(mi.miConfig[_keyID].ActPoint));
-    uint8tofloat((_buf+6), &(mi.miConfig[_keyID].LiftTravel));
-    uint8tofloat((_buf+10), &(mi.miConfig[_keyID].PressTravel));
+    uint8tofloat((_buf+6), &(mi.miConfig[_keyID].ActPoint2));
+    uint8tofloat((_buf+10), &(mi.miConfig[_keyID].LiftTravel));
+    uint8tofloat((_buf+14), &(mi.miConfig[_keyID].PressTravel));
     mi.Convert(&mi.miConfig[_keyID], &mi.ADC_CONFIG[_keyID]);
     ReturnState(0xFF);
 }
@@ -124,6 +126,6 @@ void ChangeRGBMap(const uint8_t* _buf) {
 
 extern "C"
 void ChangeRGBFXArg(const uint8_t* _buf) {
-    memcpy(mi.RGBFXArgs, _buf + 1, 16);
+    memcpy(mi.RGBFXArgs, _buf + 1, 32);
     ReturnState(0xFF);
 }

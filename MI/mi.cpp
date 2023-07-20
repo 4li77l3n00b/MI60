@@ -1,6 +1,8 @@
 #include "mi.h"
 
-const uint16_t SectorByteLength[6] = {4*61, 7*61, 4*2*2, 2*2*61, 3*65*3, 16};
+const uint16_t SectorByteLength[6] = {4*61, 9*61, 4*2*2, 2*2*61, 3*65*3, 32};
+
+const uint16_t _offset = 0;
 
 void DelayUs(uint32_t _quarterus)
 {
@@ -26,34 +28,42 @@ void MI::ScanAndUpdate()
             else {
                 switch (ADC_CONFIG[i * 4 + k].TRG_MODE) {
                     case WOOT:
-                        if (m < ADC_CONFIG[i*4+k].ACT_POINT) {
+                        if (m < ADC_CONFIG[i*4+k].ACT_POINT) { //处于上死区
                             TRIGGERED[i*4+k] = false;
                             scanBuffer[i*4+k] = ADC_CONFIG[i*4+k].ACT_POINT;
                             keyBuffer[i*4+k] = false;
+                            GOING[i*4+k] = false;
                         }
-                        if (!TRIGGERED[i*4+k] && m >= ADC_CONFIG[i*4+k].ACT_POINT) {
-                            TRIGGERED[i*4+k] = true;
+                        else if (m > ADC_CONFIG[i*4+k].ACT2_POINT) { //处于下死区
+                            TRIGGERED[i*4+k] = false;
+                            scanBuffer[i*4+k] = ADC_CONFIG[i*4+k].ACT2_POINT;
                             keyBuffer[i*4+k] = true;
-                            PENDING[i*4+k] = false;
                             GOING[i*4+k] = true;
                         }
                         if (TRIGGERED[i*4+k]) {
                             if (PENDING[i*4+k]) {
-                                if (scanBuffer[i*4+k] - m >= ADC_CONFIG[i*4+k].LIFT_THRESHOLD) {
+                                if (scanBuffer[i*4+k] - m >= ADC_CONFIG[i*4+k].LIFT_THRESHOLD) { //抬起距离大于触发行程
                                     PENDING[i*4+k] = false;
                                     keyBuffer[i*4+k] = false;
                                 }
-                                else if (m - scanBuffer[i*4+k] >= ADC_CONFIG[i*4+k].PRESS_THRESHOLD) {
+                                else if (m - scanBuffer[i*4+k] >= ADC_CONFIG[i*4+k].PRESS_THRESHOLD) { //按下距离大于触发行程
                                     PENDING[i*4+k] = false;
                                     keyBuffer[i*4+k] = true;
                                 }
                             }
-                            else {
-                                if ((m > scanBuffer[i*4+k]) ^ !GOING[i*4+k]) {
-                                    PENDING[i*4+k] = true;
+                            else { //已触发完，需判断下一次触发 （按键处于后触发状态）
+                                if (((abs(m - scanBuffer[i*4+k])) > _offset) ^ ~GOING[i*4+k]) { //发生反向移动 //此处存在因adc抖动导致的系统误差，需实际测量后详细调定)
+                                    PENDING[i*4+k] = true; //进入下一次待触发状态
+                                    GOING[i*4+k] = ~GOING[i*4+k]; //反转移动方向
                                 }
-                                else scanBuffer[i*4+k] = m;
+                                else scanBuffer[i*4+k] = m; //仍处于后触发状态，保持记录当前位置
                             }
+                        }
+                        if (!TRIGGERED[i*4+k] && (m >= ADC_CONFIG[i*4+k].ACT_POINT || m <= ADC_CONFIG[i*4+k].ACT2_POINT)) {
+                            TRIGGERED[i*4+k] = true; //进入判定区
+                            keyBuffer[i*4+k] = true; //按键触发
+                            PENDING[i*4+k] = false; //等待触发
+                            GOING[i*4+k] = ~GOING[i*4+k]; //反转移动方向（是否在向下走，仅用于指示后触发状态的行程方向）
                         }
                     case APEX:
                         keyBuffer[i * 4 + k] = m > ADC_CONFIG[i * 4 + k].ACT_POINT;
@@ -209,8 +219,9 @@ void MI::CopyKeyArgs() {
     for (int i = 0; i < KEYNUM-3; i++) {
         ADC_CONFIG[i].TRG_MODE = (sfBuffer[i*7] == 0 ? MI::APEX : MI::WOOT);
         uint8to16(&sfBuffer[i*7+1], &sfBuffer[i*7+2], &ADC_CONFIG[i].ACT_POINT);
-        uint8to16(&sfBuffer[i*7+3], &sfBuffer[i*7+4], &ADC_CONFIG[i].LIFT_THRESHOLD);
-        uint8to16(&sfBuffer[i*7+5], &sfBuffer[i*7+6], &ADC_CONFIG[i].PRESS_THRESHOLD);
+        uint8to16(&sfBuffer[i*7+3], &sfBuffer[i*7+4], &ADC_CONFIG[i].ACT2_POINT);
+        uint8to16(&sfBuffer[i*7+5], &sfBuffer[i*7+6], &ADC_CONFIG[i].LIFT_THRESHOLD);
+        uint8to16(&sfBuffer[i*7+7], &sfBuffer[i*7+8], &ADC_CONFIG[i].PRESS_THRESHOLD);
     }
 }
 
@@ -231,7 +242,7 @@ void MI::CopyRGBMap() {
 
 void MI::CopyRGBFXArgs() {
     ReadSector(5, 5);
-    memcpy(RGBFXArgs, sfBuffer, 16);
+    memcpy(RGBFXArgs, sfBuffer, 32);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -256,8 +267,9 @@ void MI::SyncKeyArgs() {
     for (int i = 0; i < KEYNUM - 3; i++) {
         txBuffer[7*i] = (ADC_CONFIG[i].TRG_MODE == WOOT)? 1:0;
         uint16to8(&ADC_CONFIG[i].ACT_POINT,  &txBuffer[7*i+1], &txBuffer[7*i+2]);
-        uint16to8(&ADC_CONFIG[i].LIFT_THRESHOLD,  &txBuffer[7*i+3], &txBuffer[7*i+4]);
-        uint16to8(&ADC_CONFIG[i].PRESS_THRESHOLD,  &txBuffer[7*i+5], &txBuffer[7*i+6]);
+        uint16to8(&ADC_CONFIG[i].ACT2_POINT,  &txBuffer[7*i+3], &txBuffer[7*i+4]);
+        uint16to8(&ADC_CONFIG[i].LIFT_THRESHOLD,  &txBuffer[7*i+5], &txBuffer[7*i+6]);
+        uint16to8(&ADC_CONFIG[i].PRESS_THRESHOLD,  &txBuffer[7*i+7], &txBuffer[7*i+8]);
     }
     WriteSector(1, 1);
 }

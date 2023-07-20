@@ -118,6 +118,7 @@ public:
     {
         Mode KeyMode;
         float_t ActPoint;
+        float_t ActPoint2;
         float_t LiftTravel;
         float_t PressTravel;
     };
@@ -128,6 +129,7 @@ public:
         uint16_t MAX_POINT;
         uint16_t ZERO_POINT;
         uint16_t ACT_POINT;
+        uint16_t ACT2_POINT;
         uint16_t LIFT_THRESHOLD;
         uint16_t PRESS_THRESHOLD;
     };
@@ -137,6 +139,7 @@ public:
         _SCAN_CONFIG->TRG_MODE = _config->KeyMode;
         float_t Scaler = (_SCAN_CONFIG->MAX_POINT - _SCAN_CONFIG->ZERO_POINT) / 4;
         _SCAN_CONFIG->ACT_POINT = _SCAN_CONFIG->MAX_POINT - _config->ActPoint * Scaler;
+        _SCAN_CONFIG->ACT2_POINT = _SCAN_CONFIG->MAX_POINT - _config->ActPoint2 * Scaler;
         _SCAN_CONFIG->LIFT_THRESHOLD = _config->LiftTravel * Scaler;
         _SCAN_CONFIG->PRESS_THRESHOLD = _config->PressTravel * Scaler;
     }
@@ -168,7 +171,7 @@ public:
     uint8_t* GetHidReportBuffer(uint8_t _reportId);
 
     void SetRgbBufferByID(uint8_t _keyId, Color_t _color, float _brightness = 1);
-    uint8_t RGBFXArgs[16];
+    uint8_t RGBFXArgs[32];
     void Press(KeyCode_t _key);
     void Release(KeyCode_t _key);
     TravelConfig miConfig[KEYNUM]{};
@@ -177,7 +180,7 @@ public:
 
 private:
     bool PENDING[KEYNUM]{};
-    bool TRIGGERED[KEYNUM]{};
+    bool TRIGGERED[KEYNUM] = {0};
     bool GOING[KEYNUM]{};
     uint16_t scanBuffer[KEYNUM]{};
     bool keyBuffer[KEYNUM]{};
