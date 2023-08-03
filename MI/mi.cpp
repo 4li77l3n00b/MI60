@@ -1,8 +1,10 @@
 #include "mi.h"
 
+MI mi;
+
 const uint16_t SectorByteLength[6] = {4*61, 9*61, 4*2*2, 2*2*61, 3*65*3, 32};
 
-const uint16_t _offset = 0;
+const uint16_t offset = 0;
 
 void DelayUs(uint32_t _quarterus)
 {
@@ -24,50 +26,47 @@ void MI::ScanAndUpdate()
         for (int j = 0; j < 4; j++) ADC_value[j] = ADC_BUF[j];
         for (int k = 0; k < 4; k++) {
             m = ADC_BUF[k];
-            if (m <= ADC_CONFIG[i*4+k].ZERO_POINT) keyBuffer[i*4+k] = false;
-            else {
-                switch (ADC_CONFIG[i * 4 + k].TRG_MODE) {
-                    case WOOT:
-                        if (m < ADC_CONFIG[i*4+k].ACT_POINT) { //处于上死区
-                            TRIGGERED[i*4+k] = false;
-                            scanBuffer[i*4+k] = ADC_CONFIG[i*4+k].ACT_POINT;
-                            keyBuffer[i*4+k] = false;
-                            GOING[i*4+k] = false;
-                        }
-                        else if (m > ADC_CONFIG[i*4+k].ACT2_POINT) { //处于下死区
-                            TRIGGERED[i*4+k] = false;
-                            scanBuffer[i*4+k] = ADC_CONFIG[i*4+k].ACT2_POINT;
-                            keyBuffer[i*4+k] = true;
-                            GOING[i*4+k] = true;
-                        }
-                        if (TRIGGERED[i*4+k]) {
-                            if (PENDING[i*4+k]) {
-                                if (scanBuffer[i*4+k] - m >= ADC_CONFIG[i*4+k].LIFT_THRESHOLD) { //抬起距离大于触发行程
-                                    PENDING[i*4+k] = false;
-                                    keyBuffer[i*4+k] = false;
-                                }
-                                else if (m - scanBuffer[i*4+k] >= ADC_CONFIG[i*4+k].PRESS_THRESHOLD) { //按下距离大于触发行程
-                                    PENDING[i*4+k] = false;
-                                    keyBuffer[i*4+k] = true;
-                                }
+            switch (ADC_CONFIG[i * 4 + k].TRG_MODE) {
+                case WOOT:
+                    if (m > ADC_CONFIG[i*4+k].ACT_POINT) { //处于上死区
+                        TRIGGERED[i*4+k] = false;
+                        scanBuffer[i*4+k] = ADC_CONFIG[i*4+k].ACT_POINT;
+                        keyBuffer[i*4+k] = false;
+                        GOING[i*4+k] = false;
+                    }
+                    else if (m < ADC_CONFIG[i*4+k].ACT2_POINT) { //处于下死区
+                        TRIGGERED[i*4+k] = false;
+                        scanBuffer[i*4+k] = ADC_CONFIG[i*4+k].ACT2_POINT;
+                        keyBuffer[i*4+k] = true;
+                        GOING[i*4+k] = true;
+                    }
+                    if (TRIGGERED[i*4+k]) {
+                        if (PENDING[i*4+k]) {
+                            if (m - scanBuffer[i*4+k] >= ADC_CONFIG[i*4+k].LIFT_THRESHOLD) { //抬起距离大于触发行程
+                                PENDING[i*4+k] = false;
+                                keyBuffer[i*4+k] = false;
                             }
-                            else { //已触发完，需判断下一次触发 （按键处于后触发状态）
-                                if (((abs(m - scanBuffer[i*4+k])) > _offset) ^ ~GOING[i*4+k]) { //发生反向移动 //此处存在因adc抖动导致的系统误差，需实际测量后详细调定)
-                                    PENDING[i*4+k] = true; //进入下一次待触发状态
-                                    GOING[i*4+k] = ~GOING[i*4+k]; //反转移动方向
-                                }
-                                else scanBuffer[i*4+k] = m; //仍处于后触发状态，保持记录当前位置
+                            else if (scanBuffer[i*4+k] - m >= ADC_CONFIG[i*4+k].PRESS_THRESHOLD) { //按下距离大于触发行程
+                                PENDING[i*4+k] = false;
+                                keyBuffer[i*4+k] = true;
                             }
                         }
-                        if (!TRIGGERED[i*4+k] && (m >= ADC_CONFIG[i*4+k].ACT_POINT || m <= ADC_CONFIG[i*4+k].ACT2_POINT)) {
-                            TRIGGERED[i*4+k] = true; //进入判定区
-                            keyBuffer[i*4+k] = true; //按键触发
-                            PENDING[i*4+k] = false; //等待触发
-                            GOING[i*4+k] = ~GOING[i*4+k]; //反转移动方向（是否在向下走，仅用于指示后触发状态的行程方向）
+                        else { //已触发完，需判断下一次触发 （按键处于后触发状态）
+                            if ((m > scanBuffer[i*4+k]) & ((abs(m - scanBuffer[i*4+k])) > offset) & GOING[i*4+k]) { //发生反向移动 //此处存在因adc抖动导致的系统误差，需实际测量后详细调定)
+                                PENDING[i*4+k] = true; //进入下一次待触发状态
+                                GOING[i*4+k] = ~GOING[i*4+k]; //反转移动方向
+                            }
+                            else scanBuffer[i*4+k] = m; //仍处于后触发状态，保持记录当前位置
                         }
-                    case APEX:
-                        keyBuffer[i * 4 + k] = m > ADC_CONFIG[i * 4 + k].ACT_POINT;
-                }
+                    }
+                    if (!TRIGGERED[i*4+k] && (m >= ADC_CONFIG[i*4+k].ACT2_POINT && m <= ADC_CONFIG[i*4+k].ACT_POINT)) {
+                        TRIGGERED[i*4+k] = true; //进入判定区
+                        keyBuffer[i*4+k] = true; //按键触发
+                        PENDING[i*4+k] = false; //等待触发
+                        GOING[i*4+k] = ~GOING[i*4+k]; //反转移动方向（是否在向下走，仅用于指示后触发状态的行程方向）
+                    }
+                case APEX:
+                    keyBuffer[i * 4 + k] = ADC_CONFIG[i * 4 + k].ACT_POINT - m > offset;
             }
         }
     }
@@ -75,7 +74,6 @@ void MI::ScanAndUpdate()
 }
 
 void MI::Calibrate(uint8_t _keyID) {
-    memset(GOING, false, KEYNUM);
     //adc scan
     uint16_t m;
     uint16_t ADC_value[4];
@@ -88,17 +86,19 @@ void MI::Calibrate(uint8_t _keyID) {
         for (int k = 0; k < 4; k++) {
             if (i*4+k == _keyID) {
                 m = ADC_value[k];
-                if (!GOING[i * 4 + k] && m == scanBuffer[i * 4 + k]) {
+                if (!GOING[i * 4 + k] && abs(m - scanBuffer[i * 4 + k]) <= offset) {
                     ADC_CONFIG[_keyID].ZERO_POINT = m;
                     scanBuffer[i * 4 + k] = m;
                 } else {
-                    if (m >= scanBuffer[i * 4 + k]) {
+                    if (scanBuffer[i * 4 + k] - m >= offset) {
                         if (!GOING[i * 4 + k]) GOING[i * 4 + k] = true;
                         scanBuffer[i * 4 + k] = m;
-                    } else {
+                    }
+                    else if (m - scanBuffer[i * 4 + k] >= offset) {
                         GOING[i * 4 + k] = false;
                         ADC_CONFIG[_keyID].MAX_POINT = scanBuffer[i * 4 + k];
                         isCalibrating = false;
+                        ReturnState(0xFF);
                         Convert(&miConfig[_keyID], &ADC_CONFIG[_keyID]);
                     }
                 }
@@ -196,7 +196,9 @@ uint8_t* MI::GetHidReportBuffer(uint8_t _reportId)
     }
 }
 //----------------------------------------------------------------------------------------------------------------------
-
+bool MI::isFnPressed() {
+    return keyBuffer[60];
+}
 //----------------------------------------------------------------------------------------------------------------------
 // Read and Apply Parameters
 inline void ReadSector(uint16_t addr, uint8_t usage) {

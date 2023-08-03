@@ -106,7 +106,7 @@ public:
     bool isCalibrating = false;
     bool isCapsLocked;
     bool isScrollLocked;
-    bool isFnPresssed;
+    bool isFnPressed();
 
     enum Mode
     {
@@ -137,7 +137,7 @@ public:
     static void Convert(TravelConfig* _config, ScanConfig* _SCAN_CONFIG)
     {
         _SCAN_CONFIG->TRG_MODE = _config->KeyMode;
-        float_t Scaler = (_SCAN_CONFIG->MAX_POINT - _SCAN_CONFIG->ZERO_POINT) / 4;
+        float_t Scaler = (_SCAN_CONFIG->ZERO_POINT - _SCAN_CONFIG->MAX_POINT) / 4;
         _SCAN_CONFIG->ACT_POINT = _SCAN_CONFIG->MAX_POINT - _config->ActPoint * Scaler;
         _SCAN_CONFIG->ACT2_POINT = _SCAN_CONFIG->MAX_POINT - _config->ActPoint2 * Scaler;
         _SCAN_CONFIG->LIFT_THRESHOLD = _config->LiftTravel * Scaler;
@@ -188,5 +188,7 @@ private:
     uint8_t wsCommit[64] = {0};
     uint8_t brightnessPreDiv = 2;
 };
+
+extern MI mi;
 
 #endif

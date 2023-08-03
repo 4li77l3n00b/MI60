@@ -10,12 +10,13 @@
 #include "common_inc.h"
 #include "mi.h"
 
-//RGBFXARGS : 0=fx_id, 1=bg_bri, 2-15=args
+//RGBFXARGS : 0=fx_id, 1=bg_bri, 2-31=args
+
+extern void (*fxArray[4])();
 
 void bgFrame();
-void fxSelector();
+void fxMask();
 
 void fxRainbow();
 void fxSplash();
 void fxRan();
-void fxRanWave();

@@ -51,6 +51,7 @@ extern DMA_HandleTypeDef hdma_adc1;
 extern uint16_t ADC_BUF[4];
 extern uint8_t sfBuffer[4096];
 extern uint8_t txBuffer[4096];
+extern RNG_HandleTypeDef hrng;
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

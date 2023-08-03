@@ -1,6 +1,6 @@
 #include "common_inc.h"
 #include "MI/mi.h"
-MI mi;
+#include "rgbfx.h"
 
 void KeyboardMain() {
     //Init config from W25Q16 Flash
@@ -16,8 +16,8 @@ void KeyboardMain() {
     HAL_TIM_Base_Start_IT(&htim5);
     //RGB Frame Loop
     while (1) {
-        DelayUs(4000);
-
+        HAL_Delay(10);
+        fxMask();
         mi.SyncLights();
     }
 }
@@ -73,7 +73,7 @@ void ReturnState(uint8_t _state) {
                                mi.RAW_REPORT_SIZE);
 }
 
-extern "C"
+extern "C" //0
 void SyncAll() {
     mi.SyncCalibration();
     mi.SyncKeyArgs();
@@ -83,14 +83,13 @@ void SyncAll() {
     mi.SyncRGBFXArgs();
 }
 
-extern "C"
+extern "C" //1
 void StartCalibration(uint8_t _keyID) {
     mi.CalibKeyID = _keyID;
     mi.isCalibrating = true;
-    ReturnState(0xFF);
 }
 
-extern  "C"
+extern "C" //2
 void ChangeKeyArg(const uint8_t* _buf) {
     uint8_t _keyID = _buf[0];
     mi.miConfig[_keyID].KeyMode = (_buf[1] == 1)? MI::WOOT : MI::APEX;
@@ -102,13 +101,13 @@ void ChangeKeyArg(const uint8_t* _buf) {
     ReturnState(0xFF);
 }
 
-extern "C"
+extern "C" //3
 void ChangeConfKeyMap(const uint8_t* _buf) {
     memcpy(mi.ConflictingKeyMap, _buf, 8);
     ReturnState(0xFF);
 }
 
-extern "C"
+extern "C" //4
 void ChangeKeyMap(const uint8_t* _buf) {
     uint8_t _layer = _buf[0];
     uint8_t _keyID = _buf[1];
@@ -116,7 +115,7 @@ void ChangeKeyMap(const uint8_t* _buf) {
     ReturnState(0xFF);
 }
 
-extern "C"
+extern "C" //5
 void ChangeRGBMap(const uint8_t* _buf) {
     uint8_t _layer = _buf[0];
     uint8_t _keyID = _buf[1];
@@ -124,7 +123,7 @@ void ChangeRGBMap(const uint8_t* _buf) {
     ReturnState(0xFF);
 }
 
-extern "C"
+extern "C" //6
 void ChangeRGBFXArg(const uint8_t* _buf) {
     memcpy(mi.RGBFXArgs, _buf + 1, 32);
     ReturnState(0xFF);
