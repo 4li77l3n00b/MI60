@@ -3,7 +3,7 @@
 //
 
 #include "rgbfx.h"
-
+#include <cstdint>
 static void nop_() {}
 
 const uint8_t fxKeyMap[5][14] = {

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "stdint-gcc.h"
+#include <stdint-gcc.h>
 #include "stm32h7xx_hal.h"
 #include "main.h"
 #include "stm32h7xx_hal_tim.h"

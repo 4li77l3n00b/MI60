@@ -2,17 +2,21 @@
 #include "MI/mi.h"
 #include "rgbfx.h"
 
+//program main loop
 void KeyboardMain() {
     //Init config from W25Q16 Flash
     W25qxx_Init();
+    //keyboard initialization
     mi.InitAndIndex();
     mi.CopyKeyArgs();
     mi.CopyConfKeyMap();
     mi.CopyKeyMap();
     mi.CopyRGBMap();
     mi.CopyRGBFXArgs();
+    //ADC start
     HAL_ADC_Start_DMA(&hadc3, (uint32_t *) ADC_BUF, 2);
     HAL_ADC_Start_DMA(&hadc1, (uint32_t *) (ADC_BUF + 2), 2);
+    //8000HZ TIM5
     HAL_TIM_Base_Start_IT(&htim5);
     //RGB Frame Loop
     while (1) {
@@ -21,27 +25,38 @@ void KeyboardMain() {
         mi.SyncLights();
     }
 }
-
+//TIM5 interrupt callback
 extern "C" void OnTimerCallBack()
 {
     if (!mi.isCalibrating) {
+        //HID keyboard polling
         mi.ScanAndUpdate();
         mi.PostProcess();
         USBD_CUSTOM_HID_SendReport(&hUsbDeviceHS,
                                    mi.GetHidReportBuffer(1),
                                    MI::KEY_REPORT_SIZE);
     } else {
+        //HID calibration
         mi.Calibrate(mi.CalibKeyID);
     }
 }
-
+/*
+ * function:HAL_SPI_TxCpltCallback
+ * argv: hspi(struct)
+ * description: RGB SPI status reset
+ */
 extern "C"
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* hspi)
 {
     if (hspi == &hspi2)
         mi.isRgbTxBusy = false;
 }
-
+/*****
+ *
+ * @param _op0
+ * @param _op1 dest1
+ * @param _op2 dest2
+ */
 void uint16to8(const uint16_t* _op0, uint8_t* _op1, uint8_t* _op2) {
     *_op1 = (uint8_t)((*_op0 >> 8) & 0xFF);
     *_op2 = (uint8_t)((*_op0) & 0xFF);
@@ -54,7 +69,7 @@ void uint8to16(const uint8_t* _op1, const uint8_t* _op2, uint16_t* _dest) {
 void uint8tofloat(const uint8_t* addr, float_t* _dest) {
     memcpy(_dest, addr, 4);
 }
-
+//todo
 extern "C"
 void CapsLock(bool state) {
     mi.isCapsLocked = state;
@@ -64,7 +79,7 @@ extern "C"
 void ScrollLock(bool state) {
     mi.isScrollLocked = state;
 }
-
+//driver interaction
 extern "C"
 void ReturnState(uint8_t _state) {
     mi.hidBuffer[mi.KEY_REPORT_SIZE + 1] = _state;
@@ -72,7 +87,7 @@ void ReturnState(uint8_t _state) {
                                mi.GetHidReportBuffer(2),
                                mi.RAW_REPORT_SIZE);
 }
-
+//sync ram to flash
 extern "C" //0
 void SyncAll() {
     mi.SyncCalibration();

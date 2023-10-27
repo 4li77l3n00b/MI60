@@ -107,7 +107,6 @@ public:
     bool isCapsLocked;
     bool isScrollLocked;
     bool isFnPressed();
-
     enum Mode
     {
         WOOT,
@@ -137,11 +136,11 @@ public:
     static void Convert(TravelConfig* _config, ScanConfig* _SCAN_CONFIG)
     {
         _SCAN_CONFIG->TRG_MODE = _config->KeyMode;
-        float_t Scaler = (_SCAN_CONFIG->ZERO_POINT - _SCAN_CONFIG->MAX_POINT) / 4;
-        _SCAN_CONFIG->ACT_POINT = _SCAN_CONFIG->MAX_POINT - _config->ActPoint * Scaler;
-        _SCAN_CONFIG->ACT2_POINT = _SCAN_CONFIG->MAX_POINT - _config->ActPoint2 * Scaler;
-        _SCAN_CONFIG->LIFT_THRESHOLD = _config->LiftTravel * Scaler;
-        _SCAN_CONFIG->PRESS_THRESHOLD = _config->PressTravel * Scaler;
+        float_t Scaler = (float_t)(_SCAN_CONFIG->ZERO_POINT - _SCAN_CONFIG->MAX_POINT) / 4;
+        _SCAN_CONFIG->ACT_POINT = (uint16_t)((float_t)_SCAN_CONFIG->MAX_POINT - _config->ActPoint * Scaler);
+        _SCAN_CONFIG->ACT2_POINT = (uint16_t)((float_t)_SCAN_CONFIG->MAX_POINT - _config->ActPoint2 * Scaler);
+        _SCAN_CONFIG->LIFT_THRESHOLD = (uint16_t)((float_t)_config->LiftTravel * Scaler);
+        _SCAN_CONFIG->PRESS_THRESHOLD = (uint16_t)((float_t)_config->PressTravel * Scaler);
     }
 
     void InitAndIndex();

@@ -59,9 +59,9 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
-ALIGN_32BYTES(__attribute__((section(".RAM_D3"))) uint16_t ADC_BUF[4]);
-__attribute__((section(".RAM_D1"))) uint8_t sfBuffer[4096];
-__attribute__((section(".RAM_D1"))) uint8_t txBuffer[4096];
+ALIGN_32BYTES(__attribute__((section(".RAM_D3"))) uint16_t ADC_BUF[4]);    //tip
+__attribute__((section(".RAM_D1"))) uint8_t sfBuffer[4096];  //SPI flash buffer
+__attribute__((section(".RAM_D1"))) uint8_t txBuffer[4096];  //todo
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,6 +79,7 @@ static void MX_ADC1_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_RNG_Init(void);
 /* USER CODE BEGIN PFP */
+//重写write重定向到串口打印 stop maintain
 #ifdef __GNUC__
 int _write(int fd, char *ptr, int len)
 {
@@ -144,8 +145,10 @@ int main(void)
   MX_SPI3_Init();
   MX_RNG_Init();
   /* USER CODE BEGIN 2 */
+  //ADC self calibration
     HAL_ADCEx_Calibration_Start(&hadc3, ADC_CALIB_OFFSET_LINEARITY, ADC_SINGLE_ENDED);
     HAL_ADCEx_Calibration_Start(&hadc1, ADC_CALIB_OFFSET_LINEARITY, ADC_SINGLE_ENDED);
+    //main function
     KeyboardMain();
   /* USER CODE END 2 */
 
@@ -154,7 +157,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+      printf("unexpected error");
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
