@@ -1,4 +1,5 @@
-#include "mi.h"
+#include "modules/MI/mi.h"
+#include "modules/Delay/Delay.h"
 
 MI mi;
 
@@ -6,12 +7,7 @@ const uint16_t SectorByteLength[6] = {4*61, 9*61, 4*2*2, 2*2*61, 3*65*3, 32};
 
 const uint16_t offset = 0;
 
-void DelayUs(uint32_t _quarterus)
-{
-    for (int i = 0; i < _quarterus; i++)
-        for (int j = 0; j < 13; j++)  // ToDo: tune this for different chips
-            __NOP();
-}
+
 /*----------------------------------------------------------------------------------------------------------------------*/
 void MI::ScanAndUpdate()
 {

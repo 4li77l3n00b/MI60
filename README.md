@@ -8,7 +8,7 @@ High performance, GH60 form factor Hall Effect Keyboard
 |  |  
 |----Drivers            #STM32H750官方驱动 [cubeMX]
 |
-|----MI                 #
+|----MI                 #MI键盘相关类
 |
 |----Middlewares        #中间件    [cubeMX]
 |

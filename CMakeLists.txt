@@ -49,17 +49,24 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(USB_DEVICE/App USB_DEVICE/Target Core/Inc
+include_directories(USB_DEVICE/App
+        USB_DEVICE/Target
+        Core/Inc
         Drivers/STM32H7xx_HAL_Driver/Inc
         Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
         Middlewares/ST/STM32_USB_Device_Library/Core/Inc
         Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc
         Drivers/CMSIS/Device/ST/STM32H7xx/Include
-        Drivers/CMSIS/Include MI UserApp ./)
+        Drivers/CMSIS/Include
+        UserApp
+        ./)
 
 add_definitions(-DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx)
 
-file(GLOB_RECURSE SOURCES "Core/*.*" "Middlewares/*.*" "Drivers/*.*" "USB_DEVICE/*.*" "MI/*.*" "UserApp/*.*")
+#RGB宏
+add_compile_definitions(RGB_ENABLE)
+
+file(GLOB_RECURSE SOURCES "modules/*.*" "Core/*.*" "Middlewares/*.*" "Drivers/*.*" "USB_DEVICE/*.*" "UserApp/*.*" )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32H750IBKX_FLASH.ld)
 

@@ -1,9 +1,26 @@
+// ┏┓　　     　┏┓
+// ┏┛┻━━━━━━━━┛┻┓
+// ┃　　　　　 　　┃ 　
+// ┃　　　━　　  　┃
+// ┃　┳┛　┗┳　    ┃
+// ┃　　　　　　   ┃
+// ┃　　　┻　　   ┃
+// ┃　　　　　　 　┃
+// ┗━┓　　　┏━━━━┛
+//   ┃　　　┃ 神兽保佑　　　　　　　　
+//   ┃　　　┃ 代码无BUG！
+//   ┃　　　┗━━━━━━┓
+//   ┃　　　　　　　 ┣┓
+//   ┃　　　　　　 　┏┛
+//   ┗┓┓┏━━━━━┳┓┏━┛
+//   ┃┫┫　    ┃┫┫
+//   ┗┻┛    　┗┻┛
+
 #ifndef MI_H
 #define MI_H
 
 #include "common_inc.h"
-
-void DelayUs(uint32_t _quarterus);
+#include "modules/Delay/Delay.h"
 
 class MI
 {
