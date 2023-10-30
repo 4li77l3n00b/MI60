@@ -1,12 +1,10 @@
 #include "modules/MI/mi.h"
 #include "modules/Delay/Delay.h"
-
 MI mi;
 
 const uint16_t SectorByteLength[6] = {4*61, 9*61, 4*2*2, 2*2*61, 3*65*3, 32};
 
 const uint16_t offset = 0;
-
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 void MI::ScanAndUpdate()
@@ -198,10 +196,7 @@ bool MI::isFnPressed() {
 //----------------------------------------------------------------------------------------------------------------------
 // Read and Apply Parameters
 inline void ReadSector(uint16_t addr, uint8_t usage) {
-    W25qxx_ReadSector(sfBuffer,
-                      addr,
-                      0,
-                      SectorByteLength[usage]);
+
 }
 
 void MI::InitAndIndex() {
@@ -246,11 +241,7 @@ void MI::CopyRGBFXArgs() {
 //----------------------------------------------------------------------------------------------------------------------
 // Modify and Synchronize Parameters
 void WriteSector(uint16_t addr, uint8_t usage) {
-    W25qxx_EraseSector(addr);
-    W25qxx_WriteSector(txBuffer,
-                       addr,
-                       0,
-                       SectorByteLength[usage]);
+//todo rewrite
 }
 
 void MI::SyncCalibration() {

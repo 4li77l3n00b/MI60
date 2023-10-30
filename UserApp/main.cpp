@@ -37,8 +37,7 @@
 
 //program main loop
 void KeyboardMain() {
-    //Init config from W25Q16 Flash
-    W25qxx_Init();
+    //Init config from W25Q16 Flash todo:init w25q16
     //keyboard initialization
     mi.InitAndIndex();
     mi.CopyKeyArgs();

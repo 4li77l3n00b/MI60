@@ -16,11 +16,11 @@
 //   ┃┫┫　    ┃┫┫
 //   ┗┻┛    　┗┻┛
 
-#ifndef MI60_W25FLASH_H
-#define MI60_W25FLASH_H
+#ifndef MI60_FLASHRW_H
+#define MI60_FLASHRW_H
 
 #include "common_inc.h"
-class W25Flash {
+class FlashRW {
 
 };
 

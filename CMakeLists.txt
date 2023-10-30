@@ -1,7 +1,7 @@
-#THIS FILE IS AUTO GENERATED FROM THE TEMPLATE! DO NOT CHANGE!
+#此文件从模板自动生成! 请勿更改!
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_VERSION 1)
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.26)
 
 # specify cross-compilers and tools
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
@@ -59,12 +59,10 @@ include_directories(USB_DEVICE/App
         Drivers/CMSIS/Device/ST/STM32H7xx/Include
         Drivers/CMSIS/Include
         UserApp
-        ./)
+        ./
+)
 
 add_definitions(-DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx)
-
-#RGB宏
-add_compile_definitions(RGB_ENABLE)
 
 file(GLOB_RECURSE SOURCES "modules/*.*" "Core/*.*" "Middlewares/*.*" "Drivers/*.*" "USB_DEVICE/*.*" "UserApp/*.*" )
 

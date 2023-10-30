@@ -20,7 +20,6 @@
 #define MI_H
 
 #include "common_inc.h"
-#include "modules/Delay/Delay.h"
 
 class MI
 {
@@ -126,8 +125,8 @@ public:
     bool isFnPressed();
     enum Mode
     {
-        WOOT,
-        APEX
+        WOOT,//RT
+        APEX //Plain
     };
 
     struct TravelConfig
